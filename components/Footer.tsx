@@ -1,15 +1,14 @@
-import { logoutAccount } from '@/lib/actions/user.actions'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import { useBanking } from './banking-provider'
 
 const Footer = ({ user, type = 'desktop' }: FooterProps) => {
   const router = useRouter();
+  const { actions } = useBanking();
 
   const handleLogOut = async () => {
-    const loggedOut = await logoutAccount();
-
-    if(loggedOut) router.push('/sign-in')
+    actions.logout();
+    router.push('/sign-in');
   }
 
   return (
@@ -29,9 +28,9 @@ const Footer = ({ user, type = 'desktop' }: FooterProps) => {
           </p>
       </div>
 
-      <div className="footer_image" onClick={handleLogOut}>
-        <Image src="icons/logout.svg" fill alt="jsm" />
-      </div>
+      <button type="button" className="footer_image" onClick={handleLogOut}>
+        <Image src="/icons/logout.svg" fill alt="logout" />
+      </button>
     </footer>
   )
 }

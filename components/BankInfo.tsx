@@ -14,18 +14,18 @@ const BankInfo = ({ account, appwriteItemId, type }: BankInfoProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const isActive = appwriteItemId === account?.appwriteItemId;
+  const isActive = appwriteItemId === account.appwriteItemId;
 
   const handleBankChange = () => {
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: "id",
-      value: account?.appwriteItemId,
+      value: account.appwriteItemId,
     });
     router.push(newUrl, { scroll: false });
   };
 
-  const colors = getAccountTypeColors(account?.type as AccountTypes);
+  const colors = getAccountTypeColors(account.type);
 
   return (
     <div

@@ -1,15 +1,7 @@
-export const dynamic = 'force-dynamic'
-
 import type { Metadata } from "next";
-import { Inter, IBM_Plex_Serif } from "next/font/google";
+import type { ReactNode } from "react";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
-const ibmPlexSerif = IBM_Plex_Serif({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-ibm-plex-serif'
-})
+import { BankingProvider } from "@/components/banking-provider";
 
 export const metadata: Metadata = {
   title: "Horizon",
@@ -22,11 +14,13 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${ibmPlexSerif.variable}`}>{children}</body>
+      <body className="bg-gray-50 font-inter text-gray-900 antialiased">
+        <BankingProvider>{children}</BankingProvider>
+      </body>
     </html>
   );
 }

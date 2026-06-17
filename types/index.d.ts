@@ -57,10 +57,14 @@ declare type Account = {
   mask: string;
   institutionId: string;
   name: string;
-  type: string;
+  type: AccountTypes;
   subtype: string;
   appwriteItemId: string;
   shareableId: string;
+  accountKind?: "Savings" | "Current" | "Business";
+  institution?: string;
+  status?: string;
+  interestRate?: number;
 };
 
 declare type Transaction = {
@@ -70,16 +74,19 @@ declare type Transaction = {
   paymentChannel: string;
   type: string;
   accountId: string;
+  accountName?: string;
   amount: number;
   pending: boolean;
   category: string;
   date: string;
   image: string;
-  type: string;
   $createdAt: string;
-  channel: string;
-  senderBankId: string;
-  receiverBankId: string;
+  channel?: string;
+  senderBankId?: string;
+  receiverBankId?: string;
+  method?: string;
+  merchant?: string;
+  note?: string;
 };
 
 declare type Bank = {
@@ -145,7 +152,7 @@ declare interface CreditCardProps {
 
 declare interface BankInfoProps {
   account: Account;
-  appwriteItemId?: string;
+  appwriteItemId: string;
   type: "full" | "card";
 }
 
@@ -174,7 +181,7 @@ declare interface PaginationProps {
 }
 
 declare interface PlaidLinkProps {
-  user: User;
+  user: Pick<User, "firstName">;
   variant?: "primary" | "ghost";
   dwollaCustomerId?: string;
 }
@@ -200,7 +207,7 @@ declare interface BankDropdownProps {
 
 declare interface BankTabItemProps {
   account: Account;
-  appwriteItemId?: string;
+  appwriteItemId: string;
 }
 
 declare interface TotalBalanceBoxProps {
@@ -217,7 +224,7 @@ declare interface FooterProps {
 declare interface RightSidebarProps {
   user: User;
   transactions: Transaction[];
-  banks: Bank[] & Account[];
+  banks: Account[];
 }
 
 declare interface SiderbarProps {
@@ -257,74 +264,3 @@ declare interface PaymentTransferFormProps {
 }
 
 // Actions
-declare interface getAccountsProps {
-  userId: string;
-}
-
-declare interface getAccountProps {
-  appwriteItemId: string;
-}
-
-declare interface getInstitutionProps {
-  institutionId: string;
-}
-
-declare interface getTransactionsProps {
-  accessToken: string;
-}
-
-declare interface CreateFundingSourceOptions {
-  customerId: string; // Dwolla Customer ID
-  fundingSourceName: string; // Dwolla Funding Source Name
-  plaidToken: string; // Plaid Account Processor Token
-  _links: object; // Dwolla On Demand Authorization Link
-}
-
-declare interface CreateTransactionProps {
-  name: string;
-  amount: string;
-  senderId: string;
-  senderBankId: string;
-  receiverId: string;
-  receiverBankId: string;
-  email: string;
-}
-
-declare interface getTransactionsByBankIdProps {
-  bankId: string;
-}
-
-declare interface signInProps {
-  email: string;
-  password: string;
-}
-
-declare interface getUserInfoProps {
-  userId: string;
-}
-
-declare interface exchangePublicTokenProps {
-  publicToken: string;
-  user: User;
-}
-
-declare interface createBankAccountProps {
-  accessToken: string;
-  userId: string;
-  accountId: string;
-  bankId: string;
-  fundingSourceUrl: string;
-  shareableId: string;
-}
-
-declare interface getBanksProps {
-  userId: string;
-}
-
-declare interface getBankProps {
-  documentId: string;
-}
-
-declare interface getBankByAccountIdProps {
-  accountId: string;
-}

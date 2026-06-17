@@ -1,254 +1,367 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { useMemo, useState } from "react";
 
-import { createTransfer } from "@/lib/actions/dwolla.actions";
-import { createTransaction } from "@/lib/actions/transaction.actions";
-import { getBank, getBankByAccountId } from "@/lib/actions/user.actions";
-import { decryptId } from "@/lib/utils";
-
-import { BankDropdown } from "./BankDropdown";
 import { Button } from "./ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "./ui/form";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "./ui/tabs";
+import { useBanking } from "./banking-provider";
+import { formatAmount } from "@/lib/utils";
 
-const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  name: z.string().min(4, "Transfer note is too short"),
-  amount: z.string().min(4, "Amount is too short"),
-  senderBank: z.string().min(4, "Please select a valid bank account"),
-  sharableId: z.string().min(8, "Please select a valid sharable Id"),
-});
-
-const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      amount: "",
-      senderBank: "",
-      sharableId: "",
-    },
+const PaymentTransferForm = () => {
+  const { state, actions } = useBanking();
+  const [sourceId, setSourceId] = useState(state.accounts[0]?.appwriteItemId || "");
+  const [beneficiaryId, setBeneficiaryId] = useState(state.beneficiaries[0]?.id || "");
+  const [amount, setAmount] = useState(250);
+  const [note, setNote] = useState("Rent contribution");
+  const [newBeneficiary, setNewBeneficiary] = useState({
+    name: "",
+    bank: "",
+    accountNumber: "",
+    nickname: "",
+    email: "",
   });
+  const [billId, setBillId] = useState(state.bills[0]?.id || "");
+  const [airtimeProvider, setAirtimeProvider] = useState("MTN");
+  const [airtimeAmount, setAirtimeAmount] = useState(20);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const submit = async (data: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
+  const sourceAccount = useMemo(
+    () =>
+      state.accounts.find((account) => account.appwriteItemId === sourceId) ||
+      state.accounts[0],
+    [sourceId, state.accounts]
+  );
 
-    try {
-      const receiverAccountId = decryptId(data.sharableId);
-      const receiverBank = await getBankByAccountId({
-        accountId: receiverAccountId,
-      });
-      const senderBank = await getBank({ documentId: data.senderBank });
+  const selectedBeneficiary = useMemo(
+    () => state.beneficiaries.find((item) => item.id === beneficiaryId) || state.beneficiaries[0],
+    [beneficiaryId, state.beneficiaries]
+  );
 
-      const transferParams = {
-        sourceFundingSourceUrl: senderBank.fundingSourceUrl,
-        destinationFundingSourceUrl: receiverBank.fundingSourceUrl,
-        amount: data.amount,
-      };
-      // create transfer
-      const transfer = await createTransfer(transferParams);
+  const clearMessages = () => {
+    setSuccessMessage("");
+    setErrorMessage("");
+  };
 
-      // create transfer transaction
-      if (transfer) {
-        const transaction = {
-          name: data.name,
-          amount: data.amount,
-          senderId: senderBank.userId.$id,
-          senderBankId: senderBank.$id,
-          receiverId: receiverBank.userId.$id,
-          receiverBankId: receiverBank.$id,
-          email: data.email,
-        };
+  const handleTransfer = async () => {
+    clearMessages();
 
-        const newTransaction = await createTransaction(transaction);
-
-        if (newTransaction) {
-          form.reset();
-          router.push("/");
-        }
-      }
-    } catch (error) {
-      console.error("Submitting create transfer request failed: ", error);
+    if (!sourceAccount || !selectedBeneficiary) {
+      setErrorMessage("Please choose a source account and beneficiary.");
+      return;
     }
 
-    setIsLoading(false);
+    setIsProcessing(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1100));
+      actions.transfer({
+        accountId: sourceAccount.appwriteItemId,
+        amount,
+        note,
+        beneficiaryId: selectedBeneficiary.id,
+        destinationLabel: `${selectedBeneficiary.name} (${selectedBeneficiary.nickname})`,
+      });
+      setSuccessMessage(
+        `${formatAmount(amount)} sent to ${selectedBeneficiary.name} from ${sourceAccount.name}.`
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleBillPayment = async () => {
+    clearMessages();
+
+    if (!billId || !sourceAccount) {
+      setErrorMessage("Select a bill to pay.");
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 900));
+      actions.payBill(billId, sourceAccount.appwriteItemId);
+      setSuccessMessage("Bill payment processed locally and marked as paid.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleAirtimePurchase = async () => {
+    clearMessages();
+    if (!sourceAccount) {
+      setErrorMessage("Select a source account first.");
+      return;
+    }
+    setIsProcessing(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 700));
+      actions.purchaseAirtime(sourceAccount.appwriteItemId, airtimeProvider, airtimeAmount);
+      setSuccessMessage(
+        `${formatAmount(airtimeAmount)} airtime top-up completed for ${airtimeProvider}.`
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleAddBeneficiary = async () => {
+    clearMessages();
+
+    if (!newBeneficiary.name || !newBeneficiary.bank || !newBeneficiary.accountNumber) {
+      setErrorMessage("Please fill in the beneficiary details.");
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 650));
+      actions.addBeneficiary({
+        ...newBeneficiary,
+        favorite: false,
+      });
+      setNewBeneficiary({
+        name: "",
+        bank: "",
+        accountNumber: "",
+        nickname: "",
+        email: "",
+      });
+      setSuccessMessage("Beneficiary saved locally and ready for future transfers.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(submit)} className="flex flex-col">
-        <FormField
-          control={form.control}
-          name="senderBank"
-          render={() => (
-            <FormItem className="border-t border-gray-200">
-              <div className="payment-transfer_form-item pb-6 pt-5">
-                <div className="payment-transfer_form-content">
-                  <FormLabel className="text-14 font-medium text-gray-700">
-                    Select Source Bank
-                  </FormLabel>
-                  <FormDescription className="text-12 font-normal text-gray-600">
-                    Select the bank account you want to transfer funds from
-                  </FormDescription>
-                </div>
-                <div className="flex w-full flex-col">
-                  <FormControl>
-                    <BankDropdown
-                      accounts={accounts}
-                      setValue={form.setValue}
-                      otherStyles="!w-full"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-12 text-red-500" />
-                </div>
-              </div>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem className="border-t border-gray-200">
-              <div className="payment-transfer_form-item pb-6 pt-5">
-                <div className="payment-transfer_form-content">
-                  <FormLabel className="text-14 font-medium text-gray-700">
-                    Transfer Note (Optional)
-                  </FormLabel>
-                  <FormDescription className="text-12 font-normal text-gray-600">
-                    Please provide any additional information or instructions
-                    related to the transfer
-                  </FormDescription>
-                </div>
-                <div className="flex w-full flex-col">
-                  <FormControl>
-                    <Textarea
-                      placeholder="Write a short note here"
-                      className="input-class"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-12 text-red-500" />
-                </div>
-              </div>
-            </FormItem>
-          )}
-        />
-
-        <div className="payment-transfer_form-details">
-          <h2 className="text-18 font-semibold text-gray-900">
-            Bank account details
-          </h2>
-          <p className="text-16 font-normal text-gray-600">
-            Enter the bank account details of the recipient
-          </p>
+    <div className="space-y-6">
+      {(successMessage || errorMessage) && (
+        <div
+          className={`rounded-2xl px-4 py-3 text-14 ${
+            errorMessage ? "bg-rose-50 text-rose-700" : "bg-emerald-50 text-emerald-700"
+          }`}
+        >
+          {errorMessage || successMessage}
         </div>
+      )}
 
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className="border-t border-gray-200">
-              <div className="payment-transfer_form-item py-5">
-                <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                  Recipient&apos;s Email Address
-                </FormLabel>
-                <div className="flex w-full flex-col">
-                  <FormControl>
-                    <Input
-                      placeholder="ex: johndoe@gmail.com"
-                      className="input-class"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-12 text-red-500" />
-                </div>
+      <Tabs defaultValue="transfer" className="w-full">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="transfer">Transfer</TabsTrigger>
+          <TabsTrigger value="beneficiaries">Beneficiaries</TabsTrigger>
+          <TabsTrigger value="bills">Bills</TabsTrigger>
+          <TabsTrigger value="topups">Airtime</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="transfer" className="mt-6 rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="space-y-4">
+              <h3 className="text-20 font-semibold text-gray-900">Send money</h3>
+              <div>
+                <label className="text-14 font-medium text-gray-700">Source account</label>
+                <select
+                  value={sourceId}
+                  onChange={(event) => setSourceId(event.target.value)}
+                  className="input-class mt-2 w-full rounded-lg border border-gray-300 bg-white p-3"
+                >
+                  {state.accounts.map((account) => (
+                    <option key={account.id} value={account.appwriteItemId}>
+                      {account.name} - {formatAmount(account.currentBalance)}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="sharableId"
-          render={({ field }) => (
-            <FormItem className="border-t border-gray-200">
-              <div className="payment-transfer_form-item pb-5 pt-6">
-                <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                  Receiver&apos;s Plaid Sharable Id
-                </FormLabel>
-                <div className="flex w-full flex-col">
-                  <FormControl>
-                    <Input
-                      placeholder="Enter the public account number"
-                      className="input-class"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-12 text-red-500" />
-                </div>
+              <div>
+                <label className="text-14 font-medium text-gray-700">Beneficiary</label>
+                <select
+                  value={beneficiaryId}
+                  onChange={(event) => setBeneficiaryId(event.target.value)}
+                  className="input-class mt-2 w-full rounded-lg border border-gray-300 bg-white p-3"
+                >
+                  {state.beneficiaries.map((beneficiary) => (
+                    <option key={beneficiary.id} value={beneficiary.id}>
+                      {beneficiary.name} - {beneficiary.nickname}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </FormItem>
-          )}
-        />
+            </div>
 
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem className="border-y border-gray-200">
-              <div className="payment-transfer_form-item py-5">
-                <FormLabel className="text-14 w-full max-w-[280px] font-medium text-gray-700">
-                  Amount
-                </FormLabel>
-                <div className="flex w-full flex-col">
-                  <FormControl>
-                    <Input
-                      placeholder="ex: 5.00"
-                      className="input-class"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-12 text-red-500" />
-                </div>
+            <div className="space-y-4">
+              <div>
+                <label className="text-14 font-medium text-gray-700">Amount</label>
+                <Input
+                  type="number"
+                  value={amount}
+                  onChange={(event) => setAmount(Number(event.target.value))}
+                  className="input-class mt-2"
+                />
               </div>
-            </FormItem>
-          )}
-        />
+              <div>
+                <label className="text-14 font-medium text-gray-700">Transfer note</label>
+                <Textarea
+                  value={note}
+                  onChange={(event) => setNote(event.target.value)}
+                  className="input-class mt-2 min-h-28"
+                />
+              </div>
+              <Button type="button" className="w-full" onClick={handleTransfer} disabled={isProcessing}>
+                {isProcessing ? "Processing transfer..." : "Send money"}
+              </Button>
+              <div className="rounded-2xl bg-gray-50 p-4">
+                <p className="text-14 text-gray-600">Preview</p>
+                <p className="text-18 font-semibold text-gray-900">
+                  {formatAmount(amount)} from {sourceAccount?.name}
+                </p>
+                <p className="text-14 text-gray-600">
+                  Destination: {selectedBeneficiary?.name || "No beneficiary selected"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </TabsContent>
 
-        <div className="payment-transfer_btn-box">
-          <Button type="submit" className="payment-transfer_btn">
-            {isLoading ? (
-              <>
-                <Loader2 size={20} className="animate-spin" /> &nbsp; Sending...
-              </>
-            ) : (
-              "Transfer Funds"
-            )}
-          </Button>
+        <TabsContent value="beneficiaries" className="mt-6 rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+            <div>
+              <h3 className="text-20 font-semibold text-gray-900">Beneficiary management</h3>
+              <div className="mt-4 space-y-3">
+                {state.beneficiaries.map((beneficiary) => (
+                  <div key={beneficiary.id} className="rounded-2xl border border-gray-200 p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-16 font-semibold text-gray-900">{beneficiary.name}</p>
+                        <p className="text-14 text-gray-600">{beneficiary.bank}</p>
+                      </div>
+                      <span className="text-12 text-gray-500">{beneficiary.accountNumber}</span>
+                    </div>
+                    <p className="mt-2 text-14 text-gray-600">
+                      {beneficiary.nickname} · {beneficiary.email}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="text-18 font-semibold text-gray-900">Add beneficiary</h4>
+              {[
+                ["name", "Full name"],
+                ["bank", "Bank name"],
+                ["accountNumber", "Account number"],
+                ["nickname", "Nickname"],
+                ["email", "Email"],
+              ].map(([key, label]) => (
+                <Input
+                  key={key}
+                  placeholder={label}
+                  value={newBeneficiary[key as keyof typeof newBeneficiary]}
+                  onChange={(event) =>
+                    setNewBeneficiary((current) => ({
+                      ...current,
+                      [key]: event.target.value,
+                    }))
+                  }
+                  className="input-class"
+                />
+              ))}
+              <Button type="button" className="w-full" onClick={handleAddBeneficiary} disabled={isProcessing}>
+                {isProcessing ? "Saving..." : "Save beneficiary"}
+              </Button>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="bills" className="mt-6 rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="space-y-3">
+              <h3 className="text-20 font-semibold text-gray-900">Pay bills</h3>
+              <select
+                value={billId}
+                onChange={(event) => setBillId(event.target.value)}
+                className="input-class w-full rounded-lg border border-gray-300 bg-white p-3"
+              >
+                {state.bills.map((bill) => (
+                  <option key={bill.id} value={bill.id}>
+                    {bill.name} - {formatAmount(bill.amount)} - {bill.status}
+                  </option>
+                ))}
+              </select>
+              <Button type="button" className="w-full" onClick={handleBillPayment} disabled={isProcessing}>
+                {isProcessing ? "Posting payment..." : "Pay bill"}
+              </Button>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-18 font-semibold text-gray-900">Upcoming bills</h4>
+              {state.bills.map((bill) => (
+                <div key={bill.id} className="rounded-2xl bg-gray-50 p-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-14 font-medium text-gray-900">{bill.name}</p>
+                    <span className="text-12 text-gray-500">{bill.status}</span>
+                  </div>
+                  <p className="text-14 text-gray-600">
+                    Due {bill.dueDate} from {state.accounts.find((account) => account.appwriteItemId === bill.accountId)?.name}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="topups" className="mt-6 rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="space-y-4">
+              <h3 className="text-20 font-semibold text-gray-900">Airtime and data purchase</h3>
+              <select
+                value={airtimeProvider}
+                onChange={(event) => setAirtimeProvider(event.target.value)}
+                className="input-class w-full rounded-lg border border-gray-300 bg-white p-3"
+              >
+                {["MTN", "Airtel", "Glo", "9mobile"].map((provider) => (
+                  <option key={provider} value={provider}>
+                    {provider}
+                  </option>
+                ))}
+              </select>
+              <Input
+                type="number"
+                value={airtimeAmount}
+                onChange={(event) => setAirtimeAmount(Number(event.target.value))}
+                className="input-class"
+              />
+              <Button type="button" className="w-full" onClick={handleAirtimePurchase} disabled={isProcessing}>
+                {isProcessing ? "Sending request..." : "Buy airtime/data"}
+              </Button>
+            </div>
+
+            <div className="rounded-2xl bg-gray-50 p-4">
+              <p className="text-14 text-gray-600">Current balance impact</p>
+              <p className="text-24 font-semibold text-gray-900">
+                {formatAmount(airtimeAmount)}
+              </p>
+              <p className="text-14 text-gray-600">
+                The amount will be deducted from {sourceAccount?.name}.
+              </p>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {isProcessing && (
+        <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-14 text-gray-600 shadow-sm">
+          Updating your request...
         </div>
-      </form>
-    </Form>
+      )}
+    </div>
   );
 };
 

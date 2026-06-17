@@ -12,14 +12,6 @@ const RecentTransactions = ({
   page = 1,
 }: RecentTransactionsProps) => {
   const rowsPerPage = 10;
-  const totalPages = Math.ceil(transactions.length / rowsPerPage);
-
-  const indexOfLastTransaction = page * rowsPerPage;
-  const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
-
-  const currentTransactions = transactions.slice(
-    indexOfFirstTransaction, indexOfLastTransaction
-  )
 
   return (
     <section className="recent-transactions">
@@ -46,28 +38,41 @@ const RecentTransactions = ({
           ))}
         </TabsList>
 
-        {accounts.map((account: Account) => (
-          <TabsContent
-            value={account.appwriteItemId}
-            key={account.id}
-            className="space-y-4"
-          >
-            <BankInfo 
-              account={account}
-              appwriteItemId={appwriteItemId}
-              type="full"
-            />
+        {accounts.map((account: Account) => {
+          const accountTransactions = transactions.filter(
+            (transaction) => transaction.accountId === account.appwriteItemId
+          );
+          const totalPages = Math.ceil(accountTransactions.length / rowsPerPage);
+          const currentPage = Math.min(page, Math.max(1, totalPages));
+          const indexOfLastTransaction = currentPage * rowsPerPage;
+          const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
+          const currentTransactions = accountTransactions.slice(
+            indexOfFirstTransaction,
+            indexOfLastTransaction
+          );
 
-            <TransactionsTable transactions={currentTransactions} />
-            
+          return (
+            <TabsContent
+              value={account.appwriteItemId}
+              key={account.id}
+              className="space-y-4"
+            >
+              <BankInfo
+                account={account}
+                appwriteItemId={appwriteItemId}
+                type="full"
+              />
 
-            {totalPages > 1 && (
-              <div className="my-4 w-full">
-                <Pagination totalPages={totalPages} page={page} />
-              </div>
-            )}
-          </TabsContent>
-        ))}
+              <TransactionsTable transactions={currentTransactions} />
+
+              {totalPages > 1 && (
+                <div className="my-4 w-full">
+                  <Pagination totalPages={totalPages} page={currentPage} />
+                </div>
+              )}
+            </TabsContent>
+          );
+        })}
       </Tabs>
     </section>
   )

@@ -1,3 +1,5 @@
 import MyBanksPage from "@/components/MyBanksPage";
 
-export default MyBanksPage;
+export default function CardsPage() {
+  return <MyBanksPage />;
+}

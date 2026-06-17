@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import HeaderBox from "@/components/HeaderBox";
 import RecentTransactions from "@/components/RecentTransactions";
 import RightSidebar from "@/components/RightSidebar";
+import TransactionDetailsSheet from "@/components/TransactionDetailsSheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
@@ -17,14 +18,15 @@ import { cn } from "@/lib/utils";
 
 const dashboardActions = [
   { href: "/payment-transfer", label: "Transfer money" },
+  { href: "/bill-pay-direct-deposit", label: "Bill Pay / Direct Deposit" },
   { href: "/transaction-history", label: "View statement" },
-  { href: "/my-banks", label: "Manage accounts" },
+  { href: "/cards", label: "Manage cards" },
+  { href: "/admin", label: "Admin dashboard" },
 ];
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
-  const { state, summary, actions, loanPayment, convertCurrency } =
-    useBanking();
+  const { state, actions, loanPayment, convertCurrency } = useBanking();
   const homePage = Number(searchParams.get("page")) || 1;
   const [statement, setStatement] = useState<ReturnType<
     typeof actions.generateStatement
@@ -42,22 +44,33 @@ const Dashboard = () => {
   const [supportMessage, setSupportMessage] = useState("");
   const [isGeneratingStatement, setIsGeneratingStatement] = useState(false);
   const [isOpeningDeposit, setIsOpeningDeposit] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
 
   const currentAccountId =
     searchParams.get("id") || state.accounts[0]?.appwriteItemId;
   const currentAccount =
     state.accounts.find((account) => account.appwriteItemId === currentAccountId) ||
     state.accounts[0];
+  const checkingAccount =
+    state.accounts.find(
+      (account) => account.accountKind === "Current" || account.subtype === "checking",
+    ) || currentAccount;
+  const savingsAccount = state.accounts.find(
+    (account) => account.accountKind === "Savings" || account.subtype === "savings",
+  );
+  const investmentAccount = state.accounts.find(
+    (account) => account.accountKind === "Investment" || account.subtype === "portfolio",
+  );
 
   const selectedTransactions = useMemo(
     () =>
       state.transactions.filter(
         (transaction) => transaction.accountId === currentAccount?.appwriteItemId
-      ),
+      ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
     [currentAccount?.appwriteItemId, state.transactions]
   );
 
-  const savingsGoal = state.goals[0];
   const fixedDeposit = state.fixedDeposits[0];
   const loanEstimate = loanPayment(
     loanState.amount,
@@ -90,84 +103,124 @@ const Dashboard = () => {
         <header className="home-header">
           <HeaderBox
             type="greeting"
-            title="Welcome back"
-            user={state.user.firstName}
+            title="Banking overview"
+            user={state.user.name}
             subtext="Track balances, move money, and manage your financial life from a single workspace."
           />
 
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-              <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
-                Total balance
-              </p>
-              <p className="mt-2 text-30 font-semibold text-gray-900">
-                {formatAmount(summary.totalCurrentBalance)}
-              </p>
-              <p className="mt-1 text-14 text-gray-600">
-                Across {summary.totalBanks} active accounts
-              </p>
+          <div className="grid gap-4 xl:grid-cols-[1.4fr_0.9fr]">
+            <div className="rounded-[32px] border border-gray-200 bg-white p-6 shadow-sm">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
+                    Account overview
+                  </p>
+                  <p className="mt-2 text-30 font-semibold text-gray-900">
+                    {state.user.name}
+                  </p>
+                  <p className="mt-1 text-14 text-gray-600">
+                    Frontend-only account snapshot with balances and transactions driven by local mock objects.
+                  </p>
+                </div>
+                <div className="rounded-full bg-blue-25 px-4 py-2 text-12 font-semibold text-blue-700">
+                  Demo mode
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                <div className="rounded-2xl bg-gray-50 p-5">
+                  <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
+                    Checking account
+                  </p>
+                  <p className="mt-2 text-30 font-semibold text-gray-900">
+                    {formatAmount(checkingAccount?.currentBalance || 0)}
+                  </p>
+                  <p className="mt-1 text-14 text-gray-600">
+                    {checkingAccount?.officialName || "Checking Account"}
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-gray-50 p-5">
+                  <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
+                    Savings account
+                  </p>
+                  {savingsAccount ? (
+                    <>
+                      <p className="mt-2 text-30 font-semibold text-gray-900">
+                        {formatAmount(savingsAccount.currentBalance)}
+                      </p>
+                      <p className="mt-1 text-14 text-gray-600">
+                        {savingsAccount.officialName}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="mt-2 text-24 font-semibold text-gray-900">
+                        No savings account yet
+                      </p>
+                      <p className="mt-1 text-14 text-gray-600">
+                        Savings has not been created for this mock profile.
+                      </p>
+                    </>
+                  )}
+                </div>
+
+                <div className="rounded-2xl bg-gray-50 p-5">
+                  <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
+                    Investment portfolio
+                  </p>
+                  <p className="mt-2 text-30 font-semibold text-gray-900">
+                    {formatAmount(investmentAccount?.currentBalance || 0)}
+                  </p>
+                  <p className="mt-1 text-14 text-gray-600">
+                    0.00% change
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-gray-50 p-5">
+                  <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
+                    Transaction count
+                  </p>
+                  <p className="mt-2 text-30 font-semibold text-gray-900">
+                    {state.transactions.length}
+                  </p>
+                  <p className="mt-1 text-14 text-gray-600">
+                    All ledger entries are sourced from local mock data.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+
+            <div className="rounded-[32px] border border-gray-200 bg-white p-6 shadow-sm">
               <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
-                Available funds
+                Quick actions
               </p>
-              <p className="mt-2 text-30 font-semibold text-gray-900">
-                {formatAmount(summary.totalAvailableBalance)}
-              </p>
-              <p className="mt-1 text-14 text-gray-600">
-                Average yield {summary.averageInterestRate}%
-              </p>
-            </div>
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-              <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
-                Savings goal
-              </p>
-              <p className="mt-2 text-30 font-semibold text-gray-900">
-                {Math.round((savingsGoal.currentAmount / savingsGoal.targetAmount) * 100)}%
-              </p>
-              <Progress
-                value={(savingsGoal.currentAmount / savingsGoal.targetAmount) * 100}
-                className="mt-4 h-2 bg-blue-100"
-                indicatorClassName={savingsGoal.color}
-              />
-              <p className="mt-2 text-14 text-gray-600">
-                {formatAmount(savingsGoal.currentAmount)} of {formatAmount(savingsGoal.targetAmount)}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-              <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
-                Latest activity
-              </p>
-              <p className="mt-2 text-30 font-semibold text-gray-900">
-                {state.notifications.filter((notification) => !notification.read).length}
-              </p>
-              <p className="mt-1 text-14 text-gray-600">
-                unread notifications and smart alerts
-              </p>
+              <div className="mt-4 grid gap-3">
+                {dashboardActions.map((action) => (
+                  <Link
+                    key={action.href}
+                    href={action.href}
+                    className="rounded-2xl border border-gray-200 bg-gray-50 p-4 transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-white"
+                  >
+                    <p className="text-16 font-semibold text-gray-900">
+                      {action.label}
+                    </p>
+                    <p className="mt-1 text-14 text-gray-600">
+                      Open the dedicated demo flow.
+                    </p>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </header>
-
-        <div className="grid gap-4 md:grid-cols-3">
-          {dashboardActions.map((action) => (
-            <Link
-              key={action.href}
-              href={action.href}
-              className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <p className="text-16 font-semibold text-gray-900">{action.label}</p>
-              <p className="mt-2 text-14 text-gray-600">
-                Open the banking flow in a few clicks.
-              </p>
-            </Link>
-          ))}
-        </div>
 
         <RecentTransactions
           accounts={state.accounts}
           transactions={state.transactions}
           appwriteItemId={currentAccount?.appwriteItemId || ""}
           page={homePage}
+          onTransactionSelect={setSelectedTransaction}
         />
 
         <section className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_355px]">
@@ -493,13 +546,20 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <RightSidebar
-            user={state.user}
-            transactions={selectedTransactions}
-            banks={state.accounts.slice(0, 2)}
-          />
-        </section>
+        <RightSidebar
+          user={state.user}
+          transactions={selectedTransactions}
+          banks={state.accounts.slice(0, 2)}
+        />
+      </section>
       </div>
+      <TransactionDetailsSheet
+        transaction={selectedTransaction}
+        open={Boolean(selectedTransaction)}
+        onOpenChange={(open) => {
+          if (!open) setSelectedTransaction(null);
+        }}
+      />
     </section>
   );
 };

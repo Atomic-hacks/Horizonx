@@ -1,6 +1,6 @@
 import { formatAmount, formatDateTime } from "./utils";
 
-export type AccountKind = "Savings" | "Current" | "Business";
+export type AccountKind = "Savings" | "Current" | "Business" | "Investment";
 
 export type horizonAccount = {
   id: string;
@@ -28,6 +28,8 @@ export type horizonTransaction = Transaction & {
   merchant: string;
   note?: string;
   accountKind?: AccountKind;
+  balanceAfter?: number;
+  statusLabel?: "Posted" | "Pending";
 };
 
 export type Beneficiary = {
@@ -141,6 +143,50 @@ export type BankingState = {
   connectedInstitutions: string[];
 };
 
+export type UserPatch = Partial<
+  Pick<
+    User,
+    "firstName" | "lastName" | "name" | "email" | "address1" | "city" | "state" | "postalCode"
+  >
+>;
+
+export type AccountPatch = Partial<
+  Pick<
+    horizonAccount,
+    | "name"
+    | "officialName"
+    | "mask"
+    | "institution"
+    | "status"
+    | "subtype"
+    | "currentBalance"
+    | "availableBalance"
+    | "interestRate"
+  >
+>;
+
+export type TransactionPatch = Partial<
+  Pick<
+    horizonTransaction,
+    | "name"
+    | "merchant"
+    | "amount"
+    | "date"
+    | "category"
+    | "paymentChannel"
+    | "type"
+    | "pending"
+    | "note"
+    | "balanceAfter"
+    | "statusLabel"
+  >
+>;
+
+export type TransactionCreate = Omit<
+  horizonTransaction,
+  "id" | "$id" | "$createdAt"
+>;
+
 export type TransferSimulation = {
   accountId: string;
   amount: number;
@@ -164,13 +210,13 @@ export const STORAGE_EVENT = "horizon-horizon-banking-state-sync";
 
 const horizonUser: User = {
   $id: "horizon-user",
-  email: "horizon@horizon.bank",
+  email: "milana.vayntrub@horizon.demo",
   userId: "horizon-user",
   dwollaCustomerUrl: "",
   dwollaCustomerId: "horizon-customer",
-  firstName: "Jordan",
-  lastName: "Okafor",
-  name: "Jordan Okafor",
+  firstName: "Milana",
+  lastName: "Vayntrub",
+  name: "Milana Vayntrub",
   address1: "124 Crescent Road",
   city: "Austin",
   state: "TX",
@@ -179,57 +225,63 @@ const horizonUser: User = {
   ssn: "1234",
 };
 
+export const demoBankingProfile = {
+  accountHolder: "Milana Vayntrub",
+  checkingAccount: {
+    id: "acct-checking",
+    name: "Checking Account",
+    balance: 1658695.6,
+  },
+  savingsAccount: null as null | {
+    name: string;
+    balance: number;
+  },
+  investmentPortfolio: {
+    balance: 0,
+    changePercent: 0,
+  },
+  directDeposit: {
+    accountHolder: "Milana Vayntrub",
+    accountNumber: "000683117577",
+    routingNumber: "026009593",
+    address: "4849 N Merrimac Ave, Chicago ILLINOIS 60630",
+  },
+};
+
 const bankAccounts: horizonAccount[] = [
   {
-    id: "acct-savings",
-    appwriteItemId: "acct-savings",
-    name: "Horizon Savings",
-    officialName: "Horizon Digital Savings",
-    mask: "4821",
-    institutionId: "horizon-bank",
-    type: "depository",
-    subtype: "savings",
-    accountKind: "Savings",
-    currentBalance: 24890.45,
-    availableBalance: 24010.45,
-    interestRate: 4.25,
-    shareableId: encodeId("acct-savings"),
-    institution: "Horizon Bank",
-    status: "active",
-  },
-  {
-    id: "acct-current",
-    appwriteItemId: "acct-current",
-    name: "Horizon Current",
-    officialName: "Everyday Spending",
-    mask: "1054",
+    id: demoBankingProfile.checkingAccount.id,
+    appwriteItemId: demoBankingProfile.checkingAccount.id,
+    name: demoBankingProfile.checkingAccount.name,
+    officialName: "Milana Vayntrub Checking",
+    mask: "1177",
     institutionId: "horizon-bank",
     type: "depository",
     subtype: "checking",
     accountKind: "Current",
-    currentBalance: 8640.15,
-    availableBalance: 7890.15,
-    interestRate: 0.75,
-    shareableId: encodeId("acct-current"),
-    institution: "Horizon Bank",
+    currentBalance: demoBankingProfile.checkingAccount.balance,
+    availableBalance: demoBankingProfile.checkingAccount.balance,
+    interestRate: 0.35,
+    shareableId: encodeId(demoBankingProfile.checkingAccount.id),
+    institution: "horizon Bank Demo",
     status: "active",
   },
   {
-    id: "acct-business",
-    appwriteItemId: "acct-business",
-    name: "Horizon Business",
-    officialName: "Business Operating Account",
-    mask: "7740",
-    institutionId: "horizon-bank",
-    type: "credit",
-    subtype: "business",
-    accountKind: "Business",
-    currentBalance: 50240.7,
-    availableBalance: 49750.7,
-    interestRate: 2.1,
-    shareableId: encodeId("acct-business"),
-    institution: "Horizon Bank",
-    status: "linked",
+    id: "acct-investment",
+    appwriteItemId: "acct-investment",
+    name: "Investment Portfolio",
+    officialName: "Self-directed Investment Portfolio",
+    mask: "0000",
+    institutionId: "horizon-investments",
+    type: "investment",
+    subtype: "portfolio",
+    accountKind: "Investment",
+    currentBalance: 0,
+    availableBalance: 0,
+    interestRate: 0,
+    shareableId: encodeId("acct-investment"),
+    institution: "horizon Investments",
+    status: "active",
   },
 ];
 
@@ -257,109 +309,94 @@ const makeTx = (
 
 const initialTransactions: horizonTransaction[] = [
   makeTx({
-    accountId: "acct-current",
-    accountName: "Horizon Current",
-    name: "Starbucks Reserve",
-    amount: 18.95,
-    paymentChannel: "card",
-    type: "debit",
-    category: "Food and Drink",
-    date: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
-    method: "card",
-    merchant: "Starbucks",
-    minutesAgo: 45,
-  }),
-  makeTx({
-    accountId: "acct-savings",
-    accountName: "Horizon Savings",
-    name: "Salary Deposit",
-    amount: 6200,
+    accountId: demoBankingProfile.checkingAccount.id,
+    accountName: demoBankingProfile.checkingAccount.name,
+    name: "Teller Deposit CHCK",
+    amount: 1742000,
     paymentChannel: "bank",
     type: "credit",
-    category: "Payment",
-    date: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
+    category: "Deposit",
+    date: "2026-05-26T09:10:00.000Z",
     method: "bank",
-    merchant: "Northwind Payroll",
-    minutesAgo: 480,
-  }),
-  makeTx({
-    accountId: "acct-business",
-    accountName: "Horizon Business",
-    name: "Cloud Hosting",
-    amount: 149.5,
-    paymentChannel: "online",
-    type: "debit",
-    category: "Processing",
-    date: new Date(Date.now() - 19 * 60 * 60 * 1000).toISOString(),
-    method: "wallet",
-    merchant: "Render",
-    minutesAgo: 1140,
-  }),
-  makeTx({
-    accountId: "acct-current",
-    accountName: "Horizon Current",
-    name: "RideShare Trip",
-    amount: 22.1,
-    paymentChannel: "card",
-    type: "debit",
-    category: "Travel",
-    date: new Date(Date.now() - 30 * 60 * 60 * 1000).toISOString(),
-    method: "card",
-    merchant: "Bolt",
-    minutesAgo: 1800,
-  }),
-  makeTx({
-    accountId: "acct-current",
-    accountName: "Horizon Current",
-    name: "Internet Bill",
-    amount: 88,
-    paymentChannel: "bank",
-    type: "debit",
-    category: "Bank Fees",
-    date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    method: "bill",
-    merchant: "FiberWave",
-    minutesAgo: 4320,
-  }),
-  makeTx({
-    accountId: "acct-savings",
-    accountName: "Horizon Savings",
-    name: "Internal Transfer",
-    amount: 500,
-    paymentChannel: "online",
-    type: "credit",
-    category: "Transfer",
-    date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    method: "transfer",
-    merchant: "Transfer",
-    note: "Top up for emergency fund",
-    minutesAgo: 7200,
-  }),
-  makeTx({
-    accountId: "acct-business",
-    accountName: "Horizon Business",
-    name: "Client Refund",
-    amount: 400,
-    paymentChannel: "online",
-    type: "debit",
-    category: "Transfer",
-    date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
-    method: "transfer",
-    merchant: "Acme Studio",
-    minutesAgo: 8640,
-  }),
-  makeTx({
-    accountId: "acct-savings",
-    accountName: "Horizon Savings",
-    name: "Interest Credit",
-    amount: 26.41,
-    paymentChannel: "bank",
-    type: "credit",
-    category: "Payment",
-    date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-    method: "bank",
-    merchant: "Horizon Bank",
+    merchant: "Teller Deposit CHCK",
     minutesAgo: 10080,
+    balanceAfter: 1742000,
+    statusLabel: "Posted",
+  }),
+  makeTx({
+    accountId: demoBankingProfile.checkingAccount.id,
+    accountName: demoBankingProfile.checkingAccount.name,
+    name: "Teller Withdrawal",
+    amount: 2000,
+    paymentChannel: "bank",
+    type: "debit",
+    category: "Withdrawal",
+    date: "2026-05-28T10:24:00.000Z",
+    method: "bank",
+    merchant: "Teller Withdrawal",
+    minutesAgo: 9000,
+    balanceAfter: 1740000,
+    statusLabel: "Posted",
+  }),
+  makeTx({
+    accountId: demoBankingProfile.checkingAccount.id,
+    accountName: demoBankingProfile.checkingAccount.name,
+    name: "Wire Transfer",
+    amount: 80000,
+    paymentChannel: "online",
+    type: "debit",
+    category: "Transfer",
+    date: "2026-05-28T13:55:00.000Z",
+    method: "transfer",
+    merchant: "Wire Transfer",
+    minutesAgo: 8640,
+    balanceAfter: 1660000,
+    statusLabel: "Posted",
+  }),
+  makeTx({
+    accountId: demoBankingProfile.checkingAccount.id,
+    accountName: demoBankingProfile.checkingAccount.name,
+    name: "BILL-PAY Transfer",
+    amount: 4500,
+    paymentChannel: "bill",
+    type: "debit",
+    category: "Bill Pay",
+    date: "2026-06-02T08:40:00.000Z",
+    method: "bill",
+    merchant: "BILL-PAY Transfer",
+    minutesAgo: 7200,
+    balanceAfter: 1655500,
+    statusLabel: "Posted",
+  }),
+  makeTx({
+    accountId: demoBankingProfile.checkingAccount.id,
+    accountName: demoBankingProfile.checkingAccount.name,
+    name: "Cash Withdrawal",
+    amount: 2000,
+    paymentChannel: "bank",
+    type: "debit",
+    category: "Withdrawal",
+    date: "2026-06-11T15:05:00.000Z",
+    method: "bank",
+    merchant: "Cash Withdrawal",
+    minutesAgo: 5760,
+    balanceAfter: 1653500,
+    statusLabel: "Posted",
+  }),
+  makeTx({
+    accountId: demoBankingProfile.checkingAccount.id,
+    accountName: demoBankingProfile.checkingAccount.name,
+    name: "Cash Withdrawal",
+    amount: 1000,
+    paymentChannel: "bank",
+    type: "debit",
+    category: "Withdrawal",
+    date: "2026-06-15T11:30:00.000Z",
+    method: "bank",
+    merchant: "Cash Withdrawal",
+    minutesAgo: 2880,
+    balanceAfter: 1652500,
+    statusLabel: "Posted",
   }),
 ];
 
@@ -388,7 +425,7 @@ const initialState: BankingState = {
     {
       id: "beneficiary-3",
       name: "Ari Patel",
-      bank: "Horizon Bank",
+      bank: "horizon Bank",
       accountNumber: "•••• 1120",
       nickname: "Savings Split",
       email: "ari@example.com",
@@ -397,7 +434,7 @@ const initialState: BankingState = {
   cards: [
     {
       id: "card-1",
-      accountId: "acct-current",
+      accountId: demoBankingProfile.checkingAccount.id,
       cardName: "Everyday Card",
       last4: "7742",
       expiry: "09/28",
@@ -408,13 +445,13 @@ const initialState: BankingState = {
     },
     {
       id: "card-2",
-      accountId: "acct-business",
-      cardName: "Business Virtual",
+      accountId: "acct-investment",
+      cardName: "Portfolio Virtual",
       last4: "2156",
       expiry: "03/29",
       status: "active",
       spendingLimit: 12000,
-      monthlySpent: 5340,
+      monthlySpent: 0,
       network: "Mastercard",
     },
   ],
@@ -450,7 +487,7 @@ const initialState: BankingState = {
   fixedDeposits: [
     {
       id: "fd-1",
-      accountId: "acct-savings",
+      accountId: demoBankingProfile.checkingAccount.id,
       title: "12-Month Growth Deposit",
       principal: 12000,
       rate: 7.4,
@@ -461,7 +498,7 @@ const initialState: BankingState = {
     },
     {
       id: "fd-2",
-      accountId: "acct-business",
+      accountId: "acct-investment",
       title: "6-Month Liquidity Reserve",
       principal: 18000,
       rate: 5.1,
@@ -483,7 +520,7 @@ const initialState: BankingState = {
       category: "Utilities",
       amount: 88,
       dueDate: "2026-06-24",
-      accountId: "acct-current",
+      accountId: demoBankingProfile.checkingAccount.id,
       status: "due",
     },
     {
@@ -492,16 +529,16 @@ const initialState: BankingState = {
       category: "Rent",
       amount: 2100,
       dueDate: "2026-06-28",
-      accountId: "acct-current",
+      accountId: demoBankingProfile.checkingAccount.id,
       status: "due",
     },
     {
       id: "bill-3",
-      name: "Horizon Music",
+      name: "horizon Music",
       category: "Streaming",
       amount: 12.99,
       dueDate: "2026-06-18",
-      accountId: "acct-business",
+      accountId: "acct-investment",
       status: "paid",
     },
   ],
@@ -531,8 +568,8 @@ const initialState: BankingState = {
   notifications: [
     {
       id: "notif-1",
-      title: "Salary received",
-      body: "Your recurring salary landed in Horizon Savings.",
+      title: "Deposit received",
+      body: "A teller deposit was posted to Checking Account.",
       time: "10 minutes ago",
       read: false,
       tone: "success",
@@ -540,7 +577,7 @@ const initialState: BankingState = {
     {
       id: "notif-2",
       title: "Card limit warning",
-      body: "Business Virtual is at 44% of monthly spending limit.",
+      body: "Portfolio Virtual is at 0% of monthly spending limit.",
       time: "1 hour ago",
       read: false,
       tone: "warning",
@@ -584,7 +621,7 @@ const initialState: BankingState = {
     NGN: 1525,
     CAD: 1.37,
   },
-  connectedInstitutions: ["Horizon Bank", "Northwind Credit", "Metro Savings"],
+  connectedInstitutions: ["horizon Bank", "Northwind Credit", "Metro Savings"],
 };
 
 const safeClone = <T>(value: T): T => JSON.parse(JSON.stringify(value));
@@ -648,6 +685,23 @@ const createNotification = (
   tone,
 });
 
+const normalizeTransaction = (
+  transaction: TransactionCreate,
+): horizonTransaction => {
+  const stamp = Date.now();
+  const transactionIdentity = transaction as Partial<
+    Pick<horizonTransaction, "id" | "$id" | "$createdAt">
+  >;
+
+  return {
+    ...transaction,
+    id: transactionIdentity.id || `tx-${stamp}`,
+    $id: transactionIdentity.$id || `tx-${stamp}`,
+    $createdAt:
+      transactionIdentity.$createdAt || new Date(transaction.date).toISOString(),
+  };
+};
+
 export const bankingActions = {
   signIn: (payload: { email: string; password: string }) =>
     updateState((state) => ({
@@ -657,6 +711,89 @@ export const bankingActions = {
         email: payload.email,
         name: state.user.name,
       },
+    })),
+  updateUser: (patch: UserPatch) =>
+    updateState((state) => ({
+      ...state,
+      user: {
+        ...state.user,
+        ...patch,
+        name:
+          patch.name ||
+          `${patch.firstName || state.user.firstName} ${patch.lastName || state.user.lastName}`,
+      },
+    })),
+  updateAccount: (accountId: string, patch: AccountPatch) =>
+    updateState((state) => ({
+      ...state,
+      accounts: state.accounts.map((account) =>
+        account.appwriteItemId === accountId
+          ? {
+              ...account,
+              ...patch,
+            }
+          : account,
+      ),
+    })),
+  updateTransaction: (transactionId: string, patch: TransactionPatch) =>
+    updateState((state) => ({
+      ...state,
+      transactions: state.transactions.map((transaction) =>
+        transaction.id === transactionId || transaction.$id === transactionId
+          ? {
+              ...transaction,
+              ...patch,
+            }
+          : transaction,
+      ),
+    })),
+  addTransaction: (transaction: TransactionCreate) =>
+    updateState((state) => {
+      const nextTransaction = normalizeTransaction(transaction);
+      const accountDelta =
+        nextTransaction.type === "credit"
+          ? nextTransaction.amount
+          : -nextTransaction.amount;
+      const nextAccounts = state.accounts.map((account) =>
+        account.appwriteItemId === nextTransaction.accountId
+          ? {
+              ...account,
+              currentBalance: Number(
+                (
+                  transaction.balanceAfter ??
+                  account.currentBalance + accountDelta
+                ).toFixed(2),
+              ),
+              availableBalance: Number(
+                (
+                  transaction.balanceAfter ??
+                  account.availableBalance + accountDelta
+                ).toFixed(2),
+              ),
+            }
+          : account,
+      );
+
+      return {
+        ...appendTransaction(state, nextTransaction),
+        accounts: nextAccounts,
+        notifications: [
+          createNotification(
+            "Transaction added",
+            `${transaction.name} was added to the ledger.`,
+            transaction.type === "credit" ? "success" : "info",
+          ),
+          ...state.notifications,
+        ],
+      };
+    }),
+  removeTransaction: (transactionId: string) =>
+    updateState((state) => ({
+      ...state,
+      transactions: state.transactions.filter(
+        (transaction) =>
+          transaction.id !== transactionId && transaction.$id !== transactionId,
+      ),
     })),
   signUp: (payload: SignUpParams & { firstName: string; lastName: string }) =>
     updateState((state) => {

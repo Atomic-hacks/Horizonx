@@ -61,9 +61,9 @@ declare type Account = {
   subtype: string;
   appwriteItemId: string;
   shareableId: string;
-  accountKind?: "Savings" | "Current" | "Business";
+  accountKind?: "Savings" | "Current" | "Business" | "Investment";
   institution?: string;
-  status?: string;
+  status?: "active" | "linked" | "new";
   interestRate?: number;
 };
 
@@ -87,6 +87,8 @@ declare type Transaction = {
   method?: string;
   merchant?: string;
   note?: string;
+  balanceAfter?: number;
+  statusLabel?: "Posted" | "Pending";
 };
 
 declare type Bank = {
@@ -236,6 +238,7 @@ declare interface RecentTransactionsProps {
   transactions: Transaction[];
   appwriteItemId: string;
   page: number;
+  onTransactionSelect?: (transaction: Transaction) => void;
 }
 
 declare interface TransactionHistoryTableProps {
@@ -249,6 +252,8 @@ declare interface CategoryBadgeProps {
 
 declare interface TransactionTableProps {
   transactions: Transaction[];
+  onTransactionSelect?: (transaction: Transaction) => void;
+  showBalanceAfter?: boolean;
 }
 
 declare interface CategoryProps {

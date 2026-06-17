@@ -5,6 +5,11 @@ export const sidebarLinks = [
     label: "Dashboard",
   },
   {
+    imgURL: "/icons/credit-card.svg",
+    route: "/cards",
+    label: "Cards",
+  },
+  {
     imgURL: "/icons/dollar-circle.svg",
     route: "/my-banks",
     label: "Accounts",
@@ -18,6 +23,16 @@ export const sidebarLinks = [
     imgURL: "/icons/money-send.svg",
     route: "/payment-transfer",
     label: "Payments",
+  },
+  {
+    imgURL: "/icons/deposit.svg",
+    route: "/bill-pay-direct-deposit",
+    label: "Bill Pay / Direct Deposit",
+  },
+  {
+    imgURL: "/icons/edit.svg",
+    route: "/admin",
+    label: "Admin",
   },
 ];
 
@@ -86,6 +101,30 @@ export const transactionCategoryStyles = {
     borderColor: "border-red-700",
     backgroundColor: "bg-red-700",
     textColor: "text-red-700",
+    chipBackgroundColor: "bg-inherit",
+  },
+  Posted: {
+    borderColor: "border-emerald-600",
+    backgroundColor: "bg-emerald-600",
+    textColor: "text-emerald-700",
+    chipBackgroundColor: "bg-inherit",
+  },
+  Deposit: {
+    borderColor: "border-emerald-600",
+    backgroundColor: "bg-emerald-600",
+    textColor: "text-emerald-700",
+    chipBackgroundColor: "bg-inherit",
+  },
+  Withdrawal: {
+    borderColor: "border-rose-600",
+    backgroundColor: "bg-rose-600",
+    textColor: "text-rose-700",
+    chipBackgroundColor: "bg-inherit",
+  },
+  "Bill Pay": {
+    borderColor: "border-amber-600",
+    backgroundColor: "bg-amber-600",
+    textColor: "text-amber-700",
     chipBackgroundColor: "bg-inherit",
   },
   Processing: {

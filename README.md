@@ -1,6 +1,6 @@
-# Horizon horizon
+# horizon horizon
 
-Horizon is now a fully frontend-only banking prototype. It runs entirely on static UI, local state, and browser storage, with no backend services, databases, auth providers, or payment integrations required.
+horizon is now a fully frontend-only banking prototype. It runs entirely on static UI, local state, and browser storage, with no backend services, databases, auth providers, or payment integrations required.
 
 ## What it includes
 

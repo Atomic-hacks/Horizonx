@@ -22,6 +22,10 @@ import {
   resetState,
   STORAGE_EVENT,
   StatementResult,
+  AccountPatch,
+  TransactionCreate,
+  TransactionPatch,
+  UserPatch,
   TransferSimulation,
 } from "@/lib/mock-banking";
 
@@ -33,6 +37,11 @@ type BankingContextValue = {
     signIn: (payload: { email: string; password: string }) => void;
     signUp: (payload: SignUpParams) => void;
     logout: () => void;
+    updateUser: (patch: UserPatch) => void;
+    updateAccount: (accountId: string, patch: AccountPatch) => void;
+    updateTransaction: (transactionId: string, patch: TransactionPatch) => void;
+    addTransaction: (transaction: TransactionCreate) => void;
+    removeTransaction: (transactionId: string) => void;
     connectBank: (institutionName?: string) => void;
     addBeneficiary: (beneficiary: Omit<Beneficiary, "id">) => void;
     transfer: (payload: TransferSimulation) => void;
@@ -94,6 +103,26 @@ export function BankingProvider({ children }: { children: ReactNode }) {
       },
       logout: () => {
         bankingActions.logout();
+        refresh();
+      },
+      updateUser: (patch: UserPatch) => {
+        bankingActions.updateUser(patch);
+        refresh();
+      },
+      updateAccount: (accountId: string, patch: AccountPatch) => {
+        bankingActions.updateAccount(accountId, patch);
+        refresh();
+      },
+      updateTransaction: (transactionId: string, patch: TransactionPatch) => {
+        bankingActions.updateTransaction(transactionId, patch);
+        refresh();
+      },
+      addTransaction: (transaction: TransactionCreate) => {
+        bankingActions.addTransaction(transaction);
+        refresh();
+      },
+      removeTransaction: (transactionId: string) => {
+        bankingActions.removeTransaction(transactionId);
         refresh();
       },
       connectBank: (institutionName?: string) => {

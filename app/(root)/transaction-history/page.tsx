@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import HeaderBox from "@/components/HeaderBox";
 import { Pagination } from "@/components/Pagination";
+import TransactionDetailsSheet from "@/components/TransactionDetailsSheet";
 import TransactionsTable from "@/components/TransactionsTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,8 @@ const TransactionHistory = () => {
   const [accountId, setAccountId] = useState(
     searchParams.get("id") || state.accounts[0]?.appwriteItemId || ""
   );
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
   const [statement, setStatement] = useState<ReturnType<
     typeof actions.generateStatement
   > | null>(null);
@@ -76,7 +79,8 @@ const TransactionHistory = () => {
           .join(" ")
           .toLowerCase()
           .includes(search.toLowerCase())
-      );
+      )
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [accountId, category, search, state.transactions, status]);
 
   const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / rowsPerPage));
@@ -206,7 +210,10 @@ const TransactionHistory = () => {
 
       <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
         {visibleTransactions.length > 0 ? (
-          <TransactionsTable transactions={visibleTransactions} />
+          <TransactionsTable
+            transactions={visibleTransactions}
+            onTransactionSelect={setSelectedTransaction}
+          />
         ) : (
           <div className="py-16 text-center">
             <p className="text-18 font-semibold text-gray-900">No transactions found</p>
@@ -256,6 +263,14 @@ const TransactionHistory = () => {
           </div>
         </div>
       </div>
+
+      <TransactionDetailsSheet
+        transaction={selectedTransaction}
+        open={Boolean(selectedTransaction)}
+        onOpenChange={(open) => {
+          if (!open) setSelectedTransaction(null);
+        }}
+      />
     </div>
   );
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BankTabItem } from './BankTabItem'
@@ -10,6 +12,7 @@ const RecentTransactions = ({
   transactions = [],
   appwriteItemId,
   page = 1,
+  onTransactionSelect,
 }: RecentTransactionsProps) => {
   const rowsPerPage = 10;
 
@@ -41,7 +44,7 @@ const RecentTransactions = ({
         {accounts.map((account: Account) => {
           const accountTransactions = transactions.filter(
             (transaction) => transaction.accountId === account.appwriteItemId
-          );
+          ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
           const totalPages = Math.ceil(accountTransactions.length / rowsPerPage);
           const currentPage = Math.min(page, Math.max(1, totalPages));
           const indexOfLastTransaction = currentPage * rowsPerPage;
@@ -63,7 +66,10 @@ const RecentTransactions = ({
                 type="full"
               />
 
-              <TransactionsTable transactions={currentTransactions} />
+              <TransactionsTable
+                transactions={currentTransactions}
+                onTransactionSelect={onTransactionSelect}
+              />
 
               {totalPages > 1 && (
                 <div className="my-4 w-full">

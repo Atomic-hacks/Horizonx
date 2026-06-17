@@ -41,7 +41,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: type === "sign-in" ? "horizon@horizon.bank" : "",
+      email: type === "sign-in" ? "milana.vayntrub@horizon.demo" : "",
       password: type === "sign-in" ? "horizon123" : "",
     },
   });
@@ -94,10 +94,10 @@ const AuthForm = ({ type }: AuthFormProps) => {
             src="/icons/logo.svg"
             width={34}
             height={34}
-            alt="Horizon logo"
+            alt="horizon logo"
           />
           <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-            Horizon
+            horizon
           </h1>
         </Link>
 
@@ -138,7 +138,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 horizon access
               </p>
               <p className="mt-1 text-14 text-blue-800">
-                Email: horizon@horizon.bank
+                Email: milana.vayntrub@horizon.demo
               </p>
               <p className="text-14 text-blue-800">Password: horizon123</p>
             </div>

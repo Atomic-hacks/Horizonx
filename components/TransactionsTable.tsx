@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -25,26 +27,37 @@ const CategoryBadge = ({ category }: CategoryBadgeProps) => {
   )
 } 
 
-const TransactionsTable = ({ transactions }: TransactionTableProps) => {
+const TransactionsTable = ({
+  transactions,
+  onTransactionSelect,
+  showBalanceAfter = true,
+}: TransactionTableProps) => {
   return (
     <div className="w-full min-w-0">
       <div className="md:hidden space-y-3">
         {transactions.map((t: Transaction) => {
-          const status = getTransactionStatus(new Date(t.date));
+          const status = t.statusLabel || getTransactionStatus(new Date(t.date));
           const amount = formatAmount(t.amount);
           const isDebit = t.type === "debit";
           const isCredit = t.type === "credit";
 
           return (
-            <article
+            <button
               key={t.id}
-              className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm"
+              type="button"
+              onClick={() => onTransactionSelect?.(t)}
+              className="w-full rounded-2xl border border-gray-200 bg-white p-4 text-left shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-14 font-semibold text-[#344054]">
                     {removeSpecialCharacters(t.name)}
                   </p>
+                  {t.merchant && t.merchant !== t.name && (
+                    <p className="mt-1 truncate text-12 text-gray-500">
+                      {t.merchant}
+                    </p>
+                  )}
                   <p className="mt-1 text-12 capitalize text-gray-500">
                     {t.paymentChannel} · {t.category}
                   </p>
@@ -62,7 +75,12 @@ const TransactionsTable = ({ transactions }: TransactionTableProps) => {
               <p className="mt-3 text-12 text-gray-500">
                 {formatDateTime(new Date(t.date)).dateTime}
               </p>
-            </article>
+              {showBalanceAfter && t.balanceAfter !== undefined && (
+                <p className="mt-1 text-12 font-medium text-gray-700">
+                  Available balance: {formatAmount(t.balanceAfter)}
+                </p>
+              )}
+            </button>
           );
         })}
       </div>
@@ -74,6 +92,7 @@ const TransactionsTable = ({ transactions }: TransactionTableProps) => {
               <TableRow>
                 <TableHead className="px-2">Transaction</TableHead>
                 <TableHead className="px-2">Amount</TableHead>
+                <TableHead className="px-2">Balance after</TableHead>
                 <TableHead className="px-2">Status</TableHead>
                 <TableHead className="px-2">Date</TableHead>
                 <TableHead className="px-2 max-md:hidden">Channel</TableHead>
@@ -82,7 +101,7 @@ const TransactionsTable = ({ transactions }: TransactionTableProps) => {
             </TableHeader>
             <TableBody>
               {transactions.map((t: Transaction) => {
-                const status = getTransactionStatus(new Date(t.date));
+                const status = t.statusLabel || getTransactionStatus(new Date(t.date));
                 const amount = formatAmount(t.amount);
 
                 const isDebit = t.type === "debit";
@@ -91,17 +110,27 @@ const TransactionsTable = ({ transactions }: TransactionTableProps) => {
                 return (
                   <TableRow
                     key={t.id}
-                    className={`${
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => onTransactionSelect?.(t)}
+                    className={`cursor-pointer transition hover:bg-gray-50 ${
                       isDebit || amount[0] === "-"
                         ? "bg-[#FFFBFA]"
                         : "bg-[#F6FEF9]"
-                    } !over:bg-none !border-b-DEFAULT`}
+                    } !border-b-DEFAULT`}
                   >
                     <TableCell className="max-w-[250px] pl-2 pr-10">
                       <div className="flex items-center gap-3">
-                        <h1 className="truncate text-14 font-semibold text-[#344054]">
-                          {removeSpecialCharacters(t.name)}
-                        </h1>
+                        <div className="min-w-0">
+                          <h1 className="truncate text-14 font-semibold text-[#344054]">
+                            {removeSpecialCharacters(t.name)}
+                          </h1>
+                          {t.merchant && t.merchant !== t.name && (
+                            <p className="truncate text-12 text-gray-500">
+                              {t.merchant}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </TableCell>
 
@@ -113,6 +142,10 @@ const TransactionsTable = ({ transactions }: TransactionTableProps) => {
                       }`}
                     >
                       {isDebit ? `-${amount}` : isCredit ? amount : amount}
+                    </TableCell>
+
+                    <TableCell className="min-w-36 pl-2 pr-10 text-14 font-medium text-gray-700">
+                      {t.balanceAfter !== undefined ? formatAmount(t.balanceAfter) : "—"}
                     </TableCell>
 
                     <TableCell className="pl-2 pr-10">

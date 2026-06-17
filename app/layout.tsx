@@ -4,11 +4,11 @@ import "./globals.css";
 import { BankingProvider } from "@/components/banking-provider";
 
 export const metadata: Metadata = {
-  title: "Horizon",
-  description: "Horizon is a modern banking platform for everyone.",
+  title: "horizon",
+  description: "horizon is a modern banking platform for everyone.",
   icons: {
-    icon: '/icons/logo.svg'
-  }
+    icon: "/icons/logo.svg",
+  },
 };
 
 export default function RootLayout({

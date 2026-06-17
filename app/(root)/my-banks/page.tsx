@@ -11,7 +11,7 @@ const MyBanks = () => {
   const { state, actions } = useBanking();
 
   return (
-    <section className="flex">
+    <section className="flex w-full min-w-0">
       <div className="my-banks space-y-8">
         <HeaderBox
           title="Accounts"
@@ -59,7 +59,7 @@ const MyBanks = () => {
 
         <div className="space-y-4">
           <h2 className="header-2">Your cards</h2>
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap justify-center gap-6 md:justify-start">
             {state.accounts.map((account) => (
               <BankCard
                 key={account.id}

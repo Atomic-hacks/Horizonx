@@ -23,11 +23,11 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
   };
 
   return (
-    <div className="flex justify-between gap-3">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <Button
         size="lg"
         variant="ghost"
-        className="p-0 hover:bg-transparent"
+        className="w-full justify-center p-0 hover:bg-transparent sm:w-auto"
         onClick={() => handleNavigation("prev")}
         disabled={Number(page) <= 1}
       >
@@ -40,13 +40,13 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
         />
         Prev
       </Button>
-      <p className="text-14 flex items-center px-2">
+      <p className="flex items-center justify-center px-2 text-14">
         {page} / {totalPages}
       </p>
       <Button
         size="lg"
         variant="ghost"
-        className="p-0 hover:bg-transparent"
+        className="w-full justify-center p-0 hover:bg-transparent sm:w-auto"
         onClick={() => handleNavigation("next")}
         disabled={Number(page) >= totalPages}
       >

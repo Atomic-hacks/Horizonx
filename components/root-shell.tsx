@@ -15,10 +15,10 @@ export default function RootShell({
   const { state } = useBanking();
 
   return (
-    <main className="flex h-screen w-full font-inter">
+    <main className="flex min-h-screen w-full overflow-x-hidden font-inter">
       <Sidebar user={state.user} />
 
-      <div className="flex size-full flex-col">
+      <div className="flex min-w-0 size-full flex-col">
         <div className="root-layout">
           <Image src="/icons/logo.svg" width={30} height={30} alt="logo" />
           <div>

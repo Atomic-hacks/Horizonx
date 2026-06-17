@@ -1,7 +1,6 @@
 import { formatAmount } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 import Copy from './Copy'
 
 const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) => {
@@ -54,7 +53,7 @@ const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) =>
           width={316}
           height={190}
           alt="lines"
-          className="absolute top-0 left-0"
+          className="absolute inset-0 h-full w-full object-cover"
         />
       </Link>
 

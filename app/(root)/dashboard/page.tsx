@@ -170,8 +170,8 @@ const Dashboard = () => {
           page={homePage}
         />
 
-        <section className="grid gap-6 xl:grid-cols-[1.3fr_0.9fr]">
-          <div className="space-y-6">
+        <section className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_355px]">
+          <div className="min-w-0 space-y-6">
             <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
               <div className="flex items-center justify-between gap-4">
                 <div>

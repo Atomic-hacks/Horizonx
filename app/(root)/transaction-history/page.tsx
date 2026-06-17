@@ -96,7 +96,7 @@ const TransactionHistory = () => {
     Math.max(1, state.budgets.reduce((sum, budget) => sum + budget.spent, 0));
 
   return (
-    <div className="transactions">
+    <div className="transactions min-w-0">
       <div className="transactions-header">
         <HeaderBox
           title="Transaction History"
@@ -121,7 +121,7 @@ const TransactionHistory = () => {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid min-w-0 gap-4 md:grid-cols-4">
         <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
           <p className="text-12 uppercase tracking-[0.2em] text-gray-500">Selected account</p>
           <p className="mt-2 text-18 font-semibold text-gray-900">{selectedAccount?.name}</p>

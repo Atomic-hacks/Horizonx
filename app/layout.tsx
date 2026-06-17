@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-gray-50 font-inter text-gray-900 antialiased">
+      <body className="min-h-screen overflow-x-hidden bg-gray-50 font-inter text-gray-900 antialiased">
         <BankingProvider>{children}</BankingProvider>
       </body>
     </html>

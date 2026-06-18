@@ -16,11 +16,11 @@ const MyBanksPage = () => {
   return (
     <section className="flex w-full min-w-0">
       <div className="my-banks space-y-8">
-        <HeaderBox
+          <HeaderBox
           title={isCardsRoute ? "Cards" : "Accounts"}
           subtext={
             isCardsRoute
-              ? "Manage your demo cards and the accounts they are linked to."
+              ? "Manage your virtual cards and the accounts they are linked to."
               : "Manage savings, current, and business accounts with virtual cards, deposit ladders, and local bank linking."
           }
         />
@@ -53,12 +53,13 @@ const MyBanksPage = () => {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Button onClick={() => actions.connectBank("Connected horizon Bank")}>
-            Connect horizon bank
+          <Button onClick={() => actions.connectBank("Connected bank Bank")} className="rounded-full">
+            Connect bank
           </Button>
           <Button
             variant="secondary"
             onClick={() => actions.toggleSecurity("biometric")}
+            className="rounded-full"
           >
             Toggle biometric lock
           </Button>
@@ -88,7 +89,7 @@ const MyBanksPage = () => {
                   key={card.id}
                   type="button"
                   onClick={() => actions.toggleCard(card.id)}
-                  className="flex w-full items-center justify-between rounded-2xl border border-gray-200 px-4 py-3 text-left"
+                  className="flex w-full items-center justify-between rounded-2xl bg-gray-50 px-4 py-3 text-left"
                 >
                   <div>
                     <p className="text-16 font-semibold text-gray-900">
@@ -106,7 +107,7 @@ const MyBanksPage = () => {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="rounded-[28px] bg-white p-6 shadow-sm">
             <h2 className="text-20 font-semibold text-gray-900">
               Savings goals
             </h2>
@@ -178,10 +179,7 @@ const MyBanksPage = () => {
             </h2>
             <div className="mt-4 space-y-3">
               {state.beneficiaries.map((beneficiary) => (
-                <div
-                  key={beneficiary.id}
-                  className="rounded-2xl border border-gray-200 p-4"
-                >
+                <div key={beneficiary.id} className="rounded-2xl bg-gray-50 p-4">
                   <p className="text-16 font-semibold text-gray-900">
                     {beneficiary.name}
                   </p>

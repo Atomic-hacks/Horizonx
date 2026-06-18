@@ -257,7 +257,7 @@ const AdminDashboardPage = () => {
       statusLabel: "Posted",
       balanceAfter: undefined,
     });
-    setStatusMessage("New transaction added to the mock ledger.");
+    setStatusMessage("New transaction added to the live ledger.");
   };
 
   const liveTransactions = state.transactions
@@ -270,7 +270,7 @@ const AdminDashboardPage = () => {
       <div className="home-content">
         <HeaderBox
           title="Admin dashboard"
-          subtext="Edit mock banking data, and the consumer dashboard updates immediately because everything reads from the same local state."
+          subtext="Edit banking data and the consumer dashboard updates immediately because everything reads from the same live state."
         />
 
         {statusMessage && (
@@ -829,7 +829,7 @@ const AdminDashboardPage = () => {
                     Live ledger items for the selected account.
                   </p>
                 </div>
-                <span className="rounded-full bg-blue-25 px-3 py-1 text-12 font-semibold text-blue-700">
+                <span className="rounded-full bg-red-25 px-3 py-1 text-12 font-semibold text-red-700">
                   Real time
                 </span>
               </div>

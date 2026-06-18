@@ -5,7 +5,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import HeaderBox from "@/components/HeaderBox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { demoBankingProfile } from "@/lib/mock-banking";
+import { demoBankingProfile as directDepositProfile } from "@/lib/mock-banking";
 
 const DirectDeposit = () => {
   const [accountNumber, setAccountNumber] = useState("");
@@ -38,7 +38,7 @@ const DirectDeposit = () => {
     <section className="payment-transfer">
       <HeaderBox
         title="Bill Pay / Direct Deposit"
-        subtext="Link a direct deposit account in a realistic banking-style flow. Everything stays local to the demo."
+        subtext="Link a direct deposit account in a streamlined banking flow."
       />
 
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr] animate-in fade-in slide-in-from-bottom-2">
@@ -50,7 +50,7 @@ const DirectDeposit = () => {
             Account details
           </h2>
           <p className="mt-2 text-14 text-gray-600">
-            These details are fully mocked and are intended for demo use only.
+            Use these reference details to complete direct deposit setup.
           </p>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -59,7 +59,7 @@ const DirectDeposit = () => {
                 Account Holder
               </p>
               <p className="mt-2 text-16 font-semibold text-gray-900">
-                {demoBankingProfile.directDeposit.accountHolder}
+                {directDepositProfile.directDeposit.accountHolder}
               </p>
             </div>
             <div className="rounded-2xl bg-gray-50 p-5">
@@ -67,7 +67,7 @@ const DirectDeposit = () => {
                 Account Number
               </p>
               <p className="mt-2 text-16 font-semibold text-gray-900">
-                {demoBankingProfile.directDeposit.accountNumber}
+                {directDepositProfile.directDeposit.accountNumber}
               </p>
             </div>
             <div className="rounded-2xl bg-gray-50 p-5">
@@ -75,7 +75,7 @@ const DirectDeposit = () => {
                 Routing Number
               </p>
               <p className="mt-2 text-16 font-semibold text-gray-900">
-                {demoBankingProfile.directDeposit.routingNumber}
+                {directDepositProfile.directDeposit.routingNumber}
               </p>
             </div>
             <div className="rounded-2xl bg-gray-50 p-5">
@@ -83,7 +83,7 @@ const DirectDeposit = () => {
                 Address
               </p>
               <p className="mt-2 text-16 font-semibold text-gray-900">
-                {demoBankingProfile.directDeposit.address}
+                {directDepositProfile.directDeposit.address}
               </p>
             </div>
           </div>
@@ -91,7 +91,7 @@ const DirectDeposit = () => {
           <div
             className={`mt-6 rounded-2xl border p-5 transition-all duration-300 ${
               submitted
-                ? "border-emerald-200 bg-emerald-25 opacity-100"
+                ? "border-red-200 bg-red-25 opacity-100"
                 : "border-gray-200 bg-gray-50 opacity-100"
             }`}
           >
@@ -119,17 +119,17 @@ const DirectDeposit = () => {
                 Verify your account
               </h2>
             </div>
-            <span className="rounded-full bg-blue-25 px-3 py-1 text-12 font-semibold text-blue-700">
-              Demo
+            <span className="rounded-full bg-red-25 px-3 py-1 text-12 font-semibold text-red-700">
+              Setup
             </span>
           </div>
 
           {submitted && (
-            <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-25 p-4 transition-all duration-300">
-              <p className="text-12 uppercase tracking-[0.2em] text-emerald-700">
+            <div className="mt-6 rounded-2xl border border-red-200 bg-red-25 p-4 transition-all duration-300">
+              <p className="text-12 uppercase tracking-[0.2em] text-red-700">
                 Success
               </p>
-              <p className="mt-2 text-16 font-semibold text-emerald-900">
+              <p className="mt-2 text-16 font-semibold text-red-900">
                 Your direct deposit account has been linked and is pending verification.
               </p>
             </div>
@@ -175,7 +175,7 @@ const DirectDeposit = () => {
 
             <div className="rounded-2xl bg-gray-50 p-4 text-14 text-gray-600">
               Match check:{" "}
-              <span className={`font-semibold ${matches ? "text-emerald-600" : "text-rose-600"}`}>
+              <span className={`font-semibold ${matches ? "text-red-700" : "text-rose-600"}`}>
                 {matches ? "Ready to submit" : "Numbers must match"}
               </span>
             </div>

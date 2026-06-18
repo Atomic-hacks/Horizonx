@@ -233,6 +233,10 @@ declare interface SiderbarProps {
   user: User;
 }
 
+declare interface BottomNavProps {
+  user: User;
+}
+
 declare interface RecentTransactionsProps {
   accounts: Account[];
   transactions: Transaction[];

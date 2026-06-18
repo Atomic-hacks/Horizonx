@@ -2,7 +2,7 @@ import { formatAmount, formatDateTime } from "./utils";
 
 export type AccountKind = "Savings" | "Current" | "Business" | "Investment";
 
-export type horizonAccount = {
+export type bankAccount = {
   id: string;
   appwriteItemId: string;
   name: string;
@@ -20,7 +20,7 @@ export type horizonAccount = {
   status: "active" | "linked" | "new";
 };
 
-export type horizonTransaction = Transaction & {
+export type bankTransaction = Transaction & {
   id: string;
   accountId: string;
   accountName: string;
@@ -127,8 +127,8 @@ export type SecuritySettings = {
 
 export type BankingState = {
   user: User;
-  accounts: horizonAccount[];
-  transactions: horizonTransaction[];
+  accounts: bankAccount[];
+  transactions: bankTransaction[];
   beneficiaries: Beneficiary[];
   cards: VirtualCard[];
   goals: SavingsGoal[];
@@ -146,13 +146,20 @@ export type BankingState = {
 export type UserPatch = Partial<
   Pick<
     User,
-    "firstName" | "lastName" | "name" | "email" | "address1" | "city" | "state" | "postalCode"
+    | "firstName"
+    | "lastName"
+    | "name"
+    | "email"
+    | "address1"
+    | "city"
+    | "state"
+    | "postalCode"
   >
 >;
 
 export type AccountPatch = Partial<
   Pick<
-    horizonAccount,
+    bankAccount,
     | "name"
     | "officialName"
     | "mask"
@@ -167,7 +174,7 @@ export type AccountPatch = Partial<
 
 export type TransactionPatch = Partial<
   Pick<
-    horizonTransaction,
+    bankTransaction,
     | "name"
     | "merchant"
     | "amount"
@@ -183,7 +190,7 @@ export type TransactionPatch = Partial<
 >;
 
 export type TransactionCreate = Omit<
-  horizonTransaction,
+  bankTransaction,
   "id" | "$id" | "$createdAt"
 >;
 
@@ -205,15 +212,15 @@ export type StatementResult = {
   downloadName: string;
 };
 
-export const STORAGE_KEY = "horizon-horizon-banking-state";
-export const STORAGE_EVENT = "horizon-horizon-banking-state-sync";
+export const STORAGE_KEY = "bank-bank-banking-state";
+export const STORAGE_EVENT = "bank-bank-banking-state-sync";
 
-const horizonUser: User = {
-  $id: "horizon-user",
-  email: "milana.vayntrub@horizon.demo",
-  userId: "horizon-user",
+const bankUser: User = {
+  $id: "bank-user",
+  email: "milana.vayntrub@bank.demo",
+  userId: "bank-user",
   dwollaCustomerUrl: "",
-  dwollaCustomerId: "horizon-customer",
+  dwollaCustomerId: "bank-customer",
   firstName: "Milana",
   lastName: "Vayntrub",
   name: "Milana Vayntrub",
@@ -248,14 +255,14 @@ export const demoBankingProfile = {
   },
 };
 
-const bankAccounts: horizonAccount[] = [
+const bankAccounts: bankAccount[] = [
   {
     id: demoBankingProfile.checkingAccount.id,
     appwriteItemId: demoBankingProfile.checkingAccount.id,
     name: demoBankingProfile.checkingAccount.name,
     officialName: "Milana Vayntrub Checking",
     mask: "1177",
-    institutionId: "horizon-bank",
+    institutionId: "bank-bank",
     type: "depository",
     subtype: "checking",
     accountKind: "Current",
@@ -263,7 +270,7 @@ const bankAccounts: horizonAccount[] = [
     availableBalance: demoBankingProfile.checkingAccount.balance,
     interestRate: 0.35,
     shareableId: encodeId(demoBankingProfile.checkingAccount.id),
-    institution: "horizon Bank Demo",
+    institution: "bank Bank Demo",
     status: "active",
   },
   {
@@ -272,7 +279,7 @@ const bankAccounts: horizonAccount[] = [
     name: "Investment Portfolio",
     officialName: "Self-directed Investment Portfolio",
     mask: "0000",
-    institutionId: "horizon-investments",
+    institutionId: "bank-investments",
     type: "investment",
     subtype: "portfolio",
     accountKind: "Investment",
@@ -280,19 +287,19 @@ const bankAccounts: horizonAccount[] = [
     availableBalance: 0,
     interestRate: 0,
     shareableId: encodeId("acct-investment"),
-    institution: "horizon Investments",
+    institution: "bank Investments",
     status: "active",
   },
 ];
 
 const makeTx = (
   tx: Omit<
-    horizonTransaction,
+    bankTransaction,
     "id" | "$id" | "$createdAt" | "pending" | "image"
   > & {
     minutesAgo: number;
   },
-): horizonTransaction => {
+): bankTransaction => {
   const createdAt = new Date(
     Date.now() - tx.minutesAgo * 60 * 1000,
   ).toISOString();
@@ -307,7 +314,7 @@ const makeTx = (
   };
 };
 
-const initialTransactions: horizonTransaction[] = [
+const initialTransactions: bankTransaction[] = [
   makeTx({
     accountId: demoBankingProfile.checkingAccount.id,
     accountName: demoBankingProfile.checkingAccount.name,
@@ -401,7 +408,7 @@ const initialTransactions: horizonTransaction[] = [
 ];
 
 const initialState: BankingState = {
-  user: horizonUser,
+  user: bankUser,
   accounts: bankAccounts,
   transactions: initialTransactions,
   beneficiaries: [
@@ -425,7 +432,7 @@ const initialState: BankingState = {
     {
       id: "beneficiary-3",
       name: "Ari Patel",
-      bank: "horizon Bank",
+      bank: "bank Bank",
       accountNumber: "•••• 1120",
       nickname: "Savings Split",
       email: "ari@example.com",
@@ -534,7 +541,7 @@ const initialState: BankingState = {
     },
     {
       id: "bill-3",
-      name: "horizon Music",
+      name: "bank Music",
       category: "Streaming",
       amount: 12.99,
       dueDate: "2026-06-18",
@@ -621,7 +628,7 @@ const initialState: BankingState = {
     NGN: 1525,
     CAD: 1.37,
   },
-  connectedInstitutions: ["horizon Bank", "Northwind Credit", "Metro Savings"],
+  connectedInstitutions: ["bank Bank", "Northwind Credit", "Metro Savings"],
 };
 
 const safeClone = <T>(value: T): T => JSON.parse(JSON.stringify(value));
@@ -666,7 +673,7 @@ export const resetState = () => {
 
 const appendTransaction = (
   state: BankingState,
-  transaction: horizonTransaction,
+  transaction: bankTransaction,
 ): BankingState => ({
   ...state,
   transactions: [transaction, ...state.transactions],
@@ -687,10 +694,10 @@ const createNotification = (
 
 const normalizeTransaction = (
   transaction: TransactionCreate,
-): horizonTransaction => {
+): bankTransaction => {
   const stamp = Date.now();
   const transactionIdentity = transaction as Partial<
-    Pick<horizonTransaction, "id" | "$id" | "$createdAt">
+    Pick<bankTransaction, "id" | "$id" | "$createdAt">
   >;
 
   return {
@@ -698,7 +705,8 @@ const normalizeTransaction = (
     id: transactionIdentity.id || `tx-${stamp}`,
     $id: transactionIdentity.$id || `tx-${stamp}`,
     $createdAt:
-      transactionIdentity.$createdAt || new Date(transaction.date).toISOString(),
+      transactionIdentity.$createdAt ||
+      new Date(transaction.date).toISOString(),
   };
 };
 
@@ -825,10 +833,10 @@ export const bankingActions = {
       ...state,
       user: createDefaultState().user,
     })),
-  connectBank: (institutionName = "Connected horizon Bank") =>
+  connectBank: (institutionName = "Connected bank Bank") =>
     updateState((state) => {
       const nextIndex = state.accounts.length + 1;
-      const newAccount: horizonAccount = {
+      const newAccount: bankAccount = {
         id: `acct-connected-${nextIndex}`,
         appwriteItemId: `acct-connected-${nextIndex}`,
         name: `${institutionName} ${nextIndex}`,
@@ -889,7 +897,7 @@ export const bankingActions = {
         ),
       };
 
-      const tx: horizonTransaction = {
+      const tx: bankTransaction = {
         id: `tx-${Date.now()}`,
         $id: `tx-${Date.now()}`,
         $createdAt: new Date().toISOString(),
@@ -952,7 +960,7 @@ export const bankingActions = {
         item.id === billId ? { ...item, status: "paid" as const } : item,
       );
 
-      const tx: horizonTransaction = {
+      const tx: bankTransaction = {
         id: `tx-bill-${Date.now()}`,
         $id: `tx-bill-${Date.now()}`,
         $createdAt: new Date().toISOString(),
@@ -1006,7 +1014,7 @@ export const bankingActions = {
         ),
       };
 
-      const tx: horizonTransaction = {
+      const tx: bankTransaction = {
         id: `tx-airtime-${Date.now()}`,
         $id: `tx-airtime-${Date.now()}`,
         $createdAt: new Date().toISOString(),
@@ -1171,7 +1179,7 @@ export const bankingActions = {
       totalCredits,
       totalDebits,
       generatedAt: formatDateTime(new Date()).dateTime,
-      downloadName: `horizon-statement-${new Date()
+      downloadName: `bank-statement-${new Date()
         .toISOString()
         .slice(0, 10)}.pdf`,
     };
@@ -1202,7 +1210,7 @@ export const convertCurrency = (
   return Number((usdAmount * rates[to]).toFixed(2));
 };
 
-export const getAccountSummary = (accounts: horizonAccount[]) => {
+export const getAccountSummary = (accounts: bankAccount[]) => {
   const totalCurrentBalance = accounts.reduce(
     (sum, account) => sum + account.currentBalance,
     0,

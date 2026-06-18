@@ -124,7 +124,7 @@ body {
   }
 
   .total-balance {
-    @apply flex w-full items-center gap-4 rounded-xl border border-gray-200 p-4 shadow-chart sm:gap-6 sm:p-6;
+    @apply flex w-full items-center gap-4 rounded-[28px] bg-white p-5 shadow-sm sm:gap-6 sm:p-6;
   }
 
   .total-balance-chart {
@@ -144,7 +144,7 @@ body {
   }
 
   .view-all-btn {
-    @apply text-14 rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700;
+    @apply text-14 rounded-full border border-red-200 bg-red-50 px-4 py-2 font-semibold text-red-700 transition hover:bg-red-100;
   }
 
   .recent-transactions {
@@ -161,11 +161,11 @@ body {
 
   /* Right sidebar */
   .right-sidebar {
-    @apply no-scrollbar hidden h-screen max-h-screen w-full max-w-[355px] flex-col border-l border-gray-200 xl:flex xl:overflow-y-scroll !important;
+    @apply no-scrollbar hidden h-screen max-h-screen w-full max-w-[355px] flex-col xl:flex xl:overflow-y-scroll !important;
   }
 
   .profile-banner {
-    @apply h-[120px] w-full bg-gradient-mesh bg-cover bg-no-repeat;
+    @apply h-[120px] w-full bg-[linear-gradient(135deg,#8b1e1e_0%,#5c1111_100%)] bg-cover bg-no-repeat;
   }
 
   .profile {
@@ -173,7 +173,7 @@ body {
   }
 
   .profile-img {
-    @apply flex-center absolute -top-8 size-24 rounded-full bg-gray-100 border-8 border-white p-2 shadow-profile;
+    @apply flex-center absolute -top-8 size-24 rounded-full bg-red-50 border-8 border-white p-2 shadow-profile;
   }
 
   .profile-details {
@@ -207,15 +207,15 @@ body {
   }
 
   .transactions-account {
-    @apply flex flex-col justify-between gap-4 rounded-lg border-y bg-blue-600 px-4 py-5 md:flex-row;
+    @apply flex flex-col justify-between gap-4 rounded-[28px] bg-[linear-gradient(135deg,#8b1e1e_0%,#b91c1c_100%)] px-5 py-6 md:flex-row;
   }
 
   .transactions-account-balance {
-    @apply flex-center flex-col  gap-2 rounded-md bg-blue-25/20 px-4 py-2 text-white;
+    @apply flex-center flex-col gap-2 rounded-2xl bg-white/10 px-4 py-2 text-white;
   }
 
   .header-box {
-    @apply flex flex-col gap-1;
+    @apply flex flex-col gap-5 rounded-[32px] bg-white p-5 shadow-sm sm:p-6;
   }
 
   .header-box-title {
@@ -228,25 +228,25 @@ body {
 
   /* Bank Card */
   .bank-card {
-    @apply relative flex h-[176px] w-full max-w-full overflow-hidden justify-between rounded-[20px] border border-white bg-bank-gradient shadow-creditCard backdrop-blur-[6px] sm:h-[190px] sm:max-w-[320px];
+    @apply relative flex h-[176px] w-full max-w-full justify-between overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#7f1d1d_0%,#ef4444_55%,#fecaca_100%)] shadow-sm sm:h-[190px] sm:max-w-[320px];
   }
 
   .bank-card_content {
-    @apply relative z-10 flex size-full min-w-0 max-w-[228px] flex-col justify-between rounded-l-[20px] bg-gray-700 bg-bank-gradient px-4 pb-4 pt-4 sm:px-5 sm:pt-5;
+    @apply relative z-10 flex size-full min-w-0 max-w-[228px] flex-col justify-between px-4 pb-4 pt-4 sm:px-5 sm:pt-5;
   }
 
   .bank-card_icon {
-    @apply flex size-full flex-1 flex-col items-end justify-between rounded-r-[20px] bg-bank-gradient bg-cover bg-center bg-no-repeat py-4 pr-4 sm:py-5 sm:pr-5;
+    @apply flex size-full flex-1 flex-col items-end justify-between py-4 pr-4 sm:py-5 sm:pr-5;
   }
 
   /* Bank Info */
   .bank-info {
-    @apply gap-[18px] flex p-4 transition-all border bg-blue-25 border-transparent;
+    @apply flex gap-[18px] rounded-[24px] bg-white p-4 shadow-sm transition-all;
   }
 
   /* Category Badge */
   .category-badge {
-    @apply flex-center truncate w-fit gap-1 rounded-2xl border-[1.5px] py-[2px] pl-1.5 pr-2;
+    @apply flex-center truncate w-fit gap-1 rounded-full border border-gray-200 py-[2px] pl-1.5 pr-2;
   }
 
   .banktab-item {
@@ -264,7 +264,7 @@ body {
 
   /* PlaidLink */
   .plaidlink-primary {
-    @apply text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form;
+    @apply text-16 rounded-full bg-[linear-gradient(135deg,#991b1b_0%,#dc2626_100%)] font-semibold text-white shadow-sm;
   }
 
   .plaidlink-ghost {
@@ -293,11 +293,11 @@ body {
   }
 
   .form-btn {
-    @apply text-16 rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form;
+    @apply text-16 rounded-full bg-[linear-gradient(135deg,#991b1b_0%,#dc2626_100%)] font-semibold text-white shadow-sm;
   }
 
   .form-link {
-    @apply text-14 cursor-pointer font-medium text-bankGradient;
+    @apply text-14 cursor-pointer font-medium text-red-700;
   }
 
   /* Payment Transfer */
@@ -321,13 +321,17 @@ body {
     @apply mt-5 flex w-full max-w-[850px] flex-col gap-3 border-gray-200 py-5 sm:flex-row;
   }
 
+  .bg-bank-gradient {
+    @apply bg-[linear-gradient(135deg,#0a3161_0%,#ffffff_45%,#b31942_100%)] !important;
+  }
+
   .payment-transfer_btn {
-    @apply text-14 w-full bg-bank-gradient font-semibold text-white shadow-form !important;
+    @apply text-14 w-full rounded-full bg-[linear-gradient(135deg,#991b1b_0%,#dc2626_100%)] font-semibold text-white shadow-sm !important;
   }
 
   /* Root Layout */
   .root-layout {
-    @apply flex h-16 items-center justify-between px-4 shadow-creditCard sm:px-6 md:hidden;
+    @apply flex h-16 items-center justify-between px-4 sm:px-6 md:hidden;
   }
 
   /* Bank Info */
@@ -337,7 +341,7 @@ body {
 
   /* Footer */
   .footer {
-    @apply flex cursor-pointer items-center justify-between gap-2 py-6;
+    @apply flex cursor-pointer items-center justify-between gap-3 py-5;
   }
 
   .footer_name {
@@ -370,7 +374,7 @@ body {
   }
 
   .sidebar-link {
-    @apply flex gap-3 items-center py-1 md:p-3 2xl:p-4 rounded-lg justify-center xl:justify-start;
+    @apply flex items-center gap-3 justify-center rounded-lg py-1 md:p-3 2xl:p-4 xl:justify-start;
   }
 
   .sidebar-label {

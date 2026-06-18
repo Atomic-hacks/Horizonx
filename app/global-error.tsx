@@ -17,14 +17,14 @@ export default function GlobalError({
       <body className="flex min-h-screen items-center justify-center bg-gray-50 px-6">
         <div className="max-w-lg rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-sm">
           <p className="text-12 uppercase tracking-[0.3em] text-gray-500">
-            Banking horizon error
+            Banking bank error
           </p>
           <h1 className="mt-3 text-30 font-semibold text-gray-900">
             Something went wrong
           </h1>
           <p className="mt-3 text-16 text-gray-600">
-            The frontend horizon hit an unexpected state. Reload the app or
-            return to the dashboard to continue.
+            The frontend bank hit an unexpected state. Reload the app or return
+            to the dashboard to continue.
           </p>
           <div className="mt-6 flex justify-center gap-3">
             <Link

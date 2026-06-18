@@ -27,7 +27,7 @@ const TransactionDetailsSheet = ({
               Transaction details
             </SheetTitle>
             <SheetDescription className="text-14 text-gray-600">
-              Minimal posted transaction information for this mock banking demo.
+              Minimal posted transaction information for the selected record.
             </SheetDescription>
           </SheetHeader>
 
@@ -44,7 +44,7 @@ const TransactionDetailsSheet = ({
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-gray-200 p-4">
+                  <div className="rounded-2xl bg-gray-50 p-4">
                     <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                       Amount
                     </p>
@@ -58,7 +58,7 @@ const TransactionDetailsSheet = ({
                         : formatAmount(transaction.amount)}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-gray-200 p-4">
+                  <div className="rounded-2xl bg-gray-50 p-4">
                     <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                       Date
                     </p>
@@ -68,7 +68,7 @@ const TransactionDetailsSheet = ({
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-gray-200 p-4">
+                <div className="rounded-2xl bg-gray-50 p-4">
                   <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                     Status
                   </p>

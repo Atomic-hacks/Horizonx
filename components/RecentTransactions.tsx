@@ -17,7 +17,7 @@ const RecentTransactions = ({
   const rowsPerPage = 10;
 
   return (
-    <section className="recent-transactions">
+    <section className="recent-transactions m-4">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="recent-transactions-label">Recent transactions</h2>
         <Link

@@ -46,7 +46,7 @@ const TransactionsTable = ({
               key={t.id}
               type="button"
               onClick={() => onTransactionSelect?.(t)}
-              className="w-full rounded-2xl border border-gray-200 bg-white p-4 text-left shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
+              className="w-full rounded-[24px] bg-white p-4 text-left shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
@@ -88,7 +88,7 @@ const TransactionsTable = ({
       <div className="hidden md:block">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader className="bg-[#f9fafb]">
+            <TableHeader className="bg-gray-50">
               <TableRow>
                 <TableHead className="px-2">Transaction</TableHead>
                 <TableHead className="px-2">Amount</TableHead>
@@ -115,9 +115,9 @@ const TransactionsTable = ({
                     onClick={() => onTransactionSelect?.(t)}
                     className={`cursor-pointer transition hover:bg-gray-50 ${
                       isDebit || amount[0] === "-"
-                        ? "bg-[#FFFBFA]"
-                        : "bg-[#F6FEF9]"
-                    } !border-b-DEFAULT`}
+                        ? "bg-red-25/40"
+                        : "bg-white"
+                    } border-b border-gray-100`}
                   >
                     <TableCell className="max-w-[250px] pl-2 pr-10">
                       <div className="flex items-center gap-3">

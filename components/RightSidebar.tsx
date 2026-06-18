@@ -14,7 +14,7 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
         <div className="profile-banner" />
         <div className="profile">
           <div className="profile-img">
-            <span className="text-5xl font-bold text-blue-500">{user.firstName[0]}</span>
+            <span className="text-5xl font-bold text-red-600">{user.firstName[0]}</span>
           </div>
 
           <div className="profile-details">
@@ -31,14 +31,14 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
       <section className="banks">
         <div className="flex w-full justify-between">
           <h2 className="header-2">My Banks</h2>
-          <Link href="/my-banks" className="flex gap-2">
+          <Link href="/my-banks" className="flex items-center gap-2 text-red-700">
             <Image 
                src="/icons/plus.svg"
               width={20}
               height={20}
               alt="plus"
             />
-            <h2 className="text-14 font-semibold text-gray-600">
+            <h2 className="text-14 font-semibold text-current">
               Manage Banks
             </h2>
           </Link>

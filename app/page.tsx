@@ -161,19 +161,33 @@ const primaryNav = [
 ];
 
 const cardOffers = [
-  { rate: "6%", label: "cash back offer", sub: "No annual fee", badge: null },
-  { rate: "2%", label: "cash back offer", sub: "No annual fee", badge: null },
+  {
+    rate: "6%",
+    label: "cash back offer",
+    sub: "No annual fee",
+    badge: null,
+    img: "/card1.webp",
+  },
+  {
+    rate: "2%",
+    label: "cash back offer",
+    sub: "No annual fee",
+    badge: null,
+    img: "/card2.webp",
+  },
   {
     rate: "1.5x",
     label: "points for every $1",
     sub: "No annual fee",
     badge: null,
+    img: "/card3.webp",
   },
   {
     rate: "0%",
     label: "intro APR offer",
     sub: "No annual fee",
     badge: "NEW OFFER",
+    img: "/card4.webp",
   },
 ];
 
@@ -270,11 +284,11 @@ export default function LandingPage() {
     <main className="min-h-screen bg-white text-slate-900 font-sans">
       {/* ── 1. FDIC top strip ────────────────────────────────────────────── */}
       <div className="bg-[#f2f2f2] border-b border-[#d8d8d8] text-[11px] text-slate-600 py-1 px-4 text-center">
-        horizon deposit products:&nbsp;
+        bank deposit products:&nbsp;
         <span className="font-bold text-[#006b35] border border-[#006b35] px-1 py-0.5 text-[10px] mr-1">
           FDIC
         </span>
-        Insured · Backed by the full faith and credit of the U.S. Government
+        Insured · Backed by the full faith and credit bank U.S.S
       </div>
 
       {/* ── 2. Utility nav ───────────────────────────────────────────────── */}
@@ -325,22 +339,8 @@ export default function LandingPage() {
           <Link href="/" className="flex items-center gap-2">
             {/* Wordmark logo */}
             <div className="flex items-center gap-1.5">
-              <div className="flex gap-0.5">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="flex flex-col gap-0.5">
-                    {[...Array(3)].map((_, j) => (
-                      <div
-                        key={j}
-                        className={`w-2 h-2 rounded-sm ${
-                          (i + j) % 2 === 0 ? "bg-[#e31837]" : "bg-[#012169]"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
               <span className="text-[15px] font-bold text-slate-900 ml-1 tracking-tight">
-                horizon BANK
+                <img src="/logo.svg" alt="logo" className="h-5" />
               </span>
             </div>
           </Link>
@@ -397,18 +397,15 @@ export default function LandingPage() {
                   <div className="text-[32px] font-black text-white leading-none">
                     {card.rate}
                   </div>
-                  <div className="text-[11px] text-blue-200 mt-1">
+                  <div className="text-[11px] text-red-200 mt-1">
                     {card.label}
                   </div>
-                  <div className="text-[11px] text-blue-300 mt-0.5">
+                  <div className="text-[11px] text-red-300 mt-0.5">
                     {card.sub}
                   </div>
-                  {/* Card placeholder */}
-                  <div className="mt-3 w-full h-16 bg-white/10 rounded border border-white/20 flex items-center justify-center">
-                    <div className="text-[10px] text-white/60">
-                      horizon Card
-                    </div>
-                  </div>
+                  {/* Card preview */}
+
+                  <img src={card.img} alt="" className="h-24" />
                   <button className="mt-3 w-full border border-white text-white text-[11px] py-1.5 hover:bg-white hover:text-[#012169] transition rounded-sm font-semibold">
                     {i === 3
                       ? "Intro APR offer for 21 billing cycles"
@@ -485,8 +482,8 @@ export default function LandingPage() {
               Change the game
             </div>
             <p className="text-[13px] text-slate-600 leading-5">
-              horizon champions everyone who dares to ask — what would you like
-              the power to do?
+              bank champions everyone who dares to ask — what would you like the
+              power to do?
             </p>
             <a
               href="#"
@@ -497,8 +494,8 @@ export default function LandingPage() {
           </div>
           <div className="bg-[#012169] text-white rounded-sm p-5 flex items-center justify-between">
             <div>
-              <div className="text-[13px] font-bold">horizon for Business</div>
-              <div className="text-[12px] text-blue-200 mt-1">
+              <div className="text-[13px] font-bold">bank for Business</div>
+              <div className="text-[12px] text-red-200 mt-1">
                 Tools built for teams and founders
               </div>
             </div>
@@ -650,7 +647,7 @@ export default function LandingPage() {
                 Convenient banking with our Mobile app
               </h2>
             </div>
-            <p className="text-[13px] text-blue-200 max-w-md leading-5">
+            <p className="text-[13px] text-red-200 max-w-md leading-5">
               Check balances, transfer funds, pay bills, and deposit checks—all
               from your phone.
             </p>
@@ -658,11 +655,11 @@ export default function LandingPage() {
               Explore our app
             </button>
           </div>
-          {/* Faux phone mockup */}
+          {/* Mobile device preview */}
           <div className="hidden md:block bg-white/10 border border-white/20 rounded-[20px] p-4 w-48">
             <div className="bg-white rounded-xl p-3">
               <div className="text-[9px] text-[#012169] font-bold mb-2">
-                horizon BANK
+                bank BANK
               </div>
               <div className="text-[8px] text-slate-500 mb-1">Accounts</div>
               <div className="grid grid-cols-2 gap-1">
@@ -758,17 +755,17 @@ export default function LandingPage() {
             implications with your personal tax or legal advisor.
           </p>
           <p>
-            Securities products are offered by horizon Investment Services, a
+            Securities products are offered by bank Investment Services, a
             registered broker-dealer, registered investment adviser, and a
-            wholly-owned subsidiary of horizon Corporation. Bank of America
-            makes available certain investment products sponsored, managed,
-            distributed or distributed by companies that are affiliates of
-            horizon Corporation.
+            wholly-owned subsidiary of bank Corporation. Bank of America makes
+            available certain investment products sponsored, managed,
+            distributed or distributed by companies that are affiliates of bank
+            Corporation.
           </p>
           <p>
             Banking, credit card, automobile loans, mortgage and home equity
-            products are provided by horizon Bank, N.A. and affiliated banks.
-            Members FDIC and wholly owned subsidiaries of horizon Corporation.
+            products are provided by bank Bank, N.A. and affiliated banks.
+            Members FDIC and wholly owned subsidiaries of bank Corporation.
             Credit and collateral are subject to approval. Terms and conditions
             apply. This is not a commitment to lend. Programs, rates, terms and
             conditions are subject to change without notice.
@@ -779,7 +776,7 @@ export default function LandingPage() {
       {/* ── 15. Footer ───────────────────────────────────────────────────── */}
       <footer className="border-t border-[#d8d8d8] bg-[#012169] text-white">
         <div className="mx-auto max-w-7xl px-4 py-6">
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-blue-200 mb-4">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-red-200 mb-4">
             {footerLinks.flat().map((link) => (
               <a
                 key={link}
@@ -790,12 +787,12 @@ export default function LandingPage() {
               </a>
             ))}
           </div>
-          <div className="border-t border-white/10 pt-4 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-blue-300">
+          <div className="border-t border-white/10 pt-4 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-red-300">
             <p>
-              horizon Bank, N.A. Member FDIC · Equal Housing Lender · © 2026
-              horizon Corporation. All rights reserved.
+              bank Bank, N.A. Member FDIC · Equal Housing Lender · © 2026 bank
+              Corporation. All rights reserved.
             </p>
-            <div className="flex items-center gap-3 text-blue-200">
+            <div className="flex items-center gap-3 text-red-200">
               {["f", "ig", "in", "yt"].map((s) => (
                 <a
                   key={s}

@@ -102,10 +102,10 @@ const TransactionHistory = () => {
   return (
     <div className="transactions min-w-0">
       <div className="transactions-header">
-        <HeaderBox
-          title="Transaction History"
-          subtext="Search, filter, and inspect the full mock ledger with downloadable statements."
-        />
+      <HeaderBox
+        title="Transaction History"
+        subtext="Search, filter, and inspect the full ledger with downloadable statements."
+      />
 
         <div className="flex flex-wrap gap-3">
           <Button onClick={() => setStatement(actions.generateStatement("This month"))}>
@@ -147,7 +147,7 @@ const TransactionHistory = () => {
       </div>
 
       {statement && (
-        <div className="rounded-2xl border border-blue-200 bg-blue-25 p-5 text-blue-950">
+        <div className="rounded-[28px] bg-red-25 p-5 text-red-950">
           <p className="text-16 font-semibold">{statement.periodLabel}</p>
           <p className="mt-1 text-14">{statement.summary}</p>
           <p className="mt-2 text-14">
@@ -200,7 +200,7 @@ const TransactionHistory = () => {
               resetPaging();
             }}
             className={`rounded-full border px-4 py-2 text-14 font-medium ${
-              category === item ? "border-blue-600 bg-blue-600 text-white" : "border-gray-200 bg-white text-gray-700"
+              category === item ? "border-red-600 bg-red-600 text-white" : "border-gray-200 bg-white text-gray-700"
             }`}
           >
             {item}
@@ -230,7 +230,7 @@ const TransactionHistory = () => {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="rounded-[28px] bg-white p-6 shadow-sm">
           <h2 className="text-20 font-semibold text-gray-900">Budget tracking</h2>
           <div className="mt-4 space-y-4">
             {state.budgets.map((budget) => {
@@ -250,10 +250,10 @@ const TransactionHistory = () => {
           </div>
         </div>
 
-        <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="rounded-[28px] bg-white p-6 shadow-sm">
           <h2 className="text-20 font-semibold text-gray-900">Statement snapshot</h2>
           <p className="mt-2 text-14 text-gray-600">
-            The mock statement summary updates instantly without any backend dependency.
+            The statement summary updates instantly so teams can verify activity at a glance.
           </p>
           <div className="mt-4 rounded-2xl bg-gray-50 p-4">
             <p className="text-14 text-gray-600">Last generated</p>

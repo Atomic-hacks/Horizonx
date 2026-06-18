@@ -27,7 +27,7 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
       <Button
         size="lg"
         variant="ghost"
-        className="w-full justify-center p-0 hover:bg-transparent sm:w-auto"
+        className="w-full justify-center rounded-full border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 sm:w-auto"
         onClick={() => handleNavigation("prev")}
         disabled={Number(page) <= 1}
       >
@@ -46,7 +46,7 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
       <Button
         size="lg"
         variant="ghost"
-        className="w-full justify-center p-0 hover:bg-transparent sm:w-auto"
+        className="w-full justify-center rounded-full border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 sm:w-auto"
         onClick={() => handleNavigation("next")}
         disabled={Number(page) >= totalPages}
       >

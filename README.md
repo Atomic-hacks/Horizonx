@@ -1,6 +1,6 @@
-# horizon horizon
+# bank bank
 
-horizon is now a fully frontend-only banking prototype. It runs entirely on static UI, local state, and browser storage, with no backend services, databases, auth providers, or payment integrations required.
+bank is now a fully frontend-only banking prototype. It runs entirely on static UI, local state, and browser storage, with no backend services, databases, auth providers, or payment integrations required.
 
 ## What it includes
 
@@ -41,4 +41,4 @@ npm run start
 ## Notes
 
 - No environment variables are required.
-- The app uses browser-local horizon state, so refreshing the page keeps your simulated banking activity.
+- The app uses browser-local bank state, so refreshing the page keeps your simulated banking activity.

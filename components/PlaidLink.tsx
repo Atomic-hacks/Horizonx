@@ -13,7 +13,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
 
   const connect = async () => {
     setIsConnecting(true);
-    actions.connectBank(`${user.firstName}'s horizon Bank`);
+    actions.connectBank(`${user.firstName}'s bank Bank`);
     await new Promise((resolve) => setTimeout(resolve, 650));
     router.push("/dashboard");
     setIsConnecting(false);
@@ -27,7 +27,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
           disabled={isConnecting}
           className="plaidlink-primary"
         >
-          {isConnecting ? "Connecting..." : "Connect horizon bank"}
+          {isConnecting ? "Connecting..." : "Connect bank bank"}
         </Button>
       ) : variant === "ghost" ? (
         <Button

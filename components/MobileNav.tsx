@@ -42,12 +42,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
             href="/dashboard"
             className="flex cursor-pointer items-center gap-1 px-4"
           >
-            <Image
-              src="/icons/logo.svg"
-              width={34}
-              height={34}
-              alt="bank logo"
-            />
+            <img src="/logo.svg" className=" h-4 " alt="bank logo" />
             <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
               bank
             </h1>

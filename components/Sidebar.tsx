@@ -19,11 +19,10 @@ const Sidebar = ({ user }: SiderbarProps) => {
           className="mb-12 cursor-pointer flex items-center gap-2"
         >
           <Image
-            src="/icons/logo.svg"
-            width={34}
-            height={34}
+            src="/logo.svg"
+            
             alt="bank logo"
-            className="size-[24px] max-xl:size-14"
+            className="size-[24px] h-4 max-xl:size-14"
           />
           <h1 className="sidebar-logo">bank</h1>
         </Link>

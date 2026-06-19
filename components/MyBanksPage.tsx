@@ -21,12 +21,12 @@ const MyBanksPage = () => {
           subtext={
             isCardsRoute
               ? "Manage your virtual cards and the accounts they are linked to."
-              : "Manage savings, current, and business accounts with virtual cards, deposit ladders, and local bank linking."
+              : "Manage savings, current, and business accounts with virtual cards, deposits, and local account linking."
           }
         />
 
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-gray-200 bg-blue-100 p-5 shadow-sm">
             <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
               Total accounts
             </p>
@@ -34,7 +34,7 @@ const MyBanksPage = () => {
               {state.accounts.length}
             </p>
           </div>
-          <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-gray-200 bg-blue-100 p-5 shadow-sm">
             <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
               Connected banks
             </p>
@@ -42,7 +42,7 @@ const MyBanksPage = () => {
               {state.connectedInstitutions.length}
             </p>
           </div>
-          <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-gray-200 bg-blue-100 p-5 shadow-sm">
             <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
               Virtual cards
             </p>
@@ -53,8 +53,8 @@ const MyBanksPage = () => {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Button onClick={() => actions.connectBank("Connected bank Bank")} className="rounded-full">
-            Connect bank
+          <Button onClick={() => actions.connectBank("Connected Northstar Demo")} className="rounded-full">
+            Connect account
           </Button>
           <Button
             variant="secondary"
@@ -79,7 +79,7 @@ const MyBanksPage = () => {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="rounded-[28px] border border-gray-200 bg-blue-100 p-6 shadow-sm">
             <h2 className="text-20 font-semibold text-gray-900">
               Virtual cards
             </h2>
@@ -89,7 +89,7 @@ const MyBanksPage = () => {
                   key={card.id}
                   type="button"
                   onClick={() => actions.toggleCard(card.id)}
-                  className="flex w-full items-center justify-between rounded-2xl bg-gray-50 px-4 py-3 text-left"
+                  className="flex w-full items-center justify-between rounded-2xl bg-blue-100 px-4 py-3 text-left"
                 >
                   <div>
                     <p className="text-16 font-semibold text-gray-900">
@@ -151,7 +151,7 @@ const MyBanksPage = () => {
             </h2>
             <div className="mt-4 space-y-3">
               {state.fixedDeposits.map((deposit) => (
-                <div key={deposit.id} className="rounded-2xl bg-gray-50 p-4">
+                <div key={deposit.id} className="rounded-2xl bg-blue-100 p-4">
                   <div className="flex items-center justify-between">
                     <p className="text-16 font-semibold text-gray-900">
                       {deposit.title}
@@ -179,7 +179,7 @@ const MyBanksPage = () => {
             </h2>
             <div className="mt-4 space-y-3">
               {state.beneficiaries.map((beneficiary) => (
-                <div key={beneficiary.id} className="rounded-2xl bg-gray-50 p-4">
+                <div key={beneficiary.id} className="rounded-2xl bg-blue-100 p-4">
                   <p className="text-16 font-semibold text-gray-900">
                     {beneficiary.name}
                   </p>

@@ -72,7 +72,7 @@ export const BankDropdown = ({
             >
               <div className="flex flex-col ">
                 <p className="text-16 font-medium">{account.name}</p>
-                <p className="text-14 font-medium text-red-700">
+                <p className="text-14 font-medium text-blue-700">
                   {formatAmount(account.currentBalance)}
                 </p>
               </div>

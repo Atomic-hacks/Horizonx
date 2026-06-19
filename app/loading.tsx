@@ -11,7 +11,7 @@ export default function Loading() {
         </div>
         <div className="mt-8 rounded-[36px] bg-slate-950 p-8">
           <div className="mx-auto max-w-3xl space-y-4 text-center">
-            <div className="mx-auto h-4 w-40 rounded-full bg-white/10" />
+            <div className="mx-auto h-10 w-40 rounded-full bg-white/10" />
             <div className="mx-auto h-16 w-full max-w-4xl rounded-[24px] bg-white/10" />
             <div className="mx-auto h-6 w-4/5 rounded-full bg-white/10" />
             <div className="mx-auto flex justify-center gap-3 pt-4">
@@ -22,7 +22,10 @@ export default function Loading() {
         </div>
         <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="h-32 rounded-[28px] border border-slate-200 bg-white" />
+            <div
+              key={index}
+              className="h-32 rounded-[28px] border border-slate-200 bg-white"
+            />
           ))}
         </div>
       </div>

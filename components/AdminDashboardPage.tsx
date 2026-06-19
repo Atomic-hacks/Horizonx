@@ -263,7 +263,7 @@ const AdminDashboardPage = () => {
   const liveTransactions = state.transactions
     .filter((transaction) => transaction.accountId === selectedAccount?.appwriteItemId)
     .slice()
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <section className="home">
@@ -274,7 +274,7 @@ const AdminDashboardPage = () => {
         />
 
         {statusMessage && (
-          <div className="rounded-2xl border border-emerald-200 bg-emerald-25 p-4 text-14 text-emerald-900">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-14 text-emerald-900">
             {statusMessage}
           </div>
         )}
@@ -829,7 +829,7 @@ const AdminDashboardPage = () => {
                     Live ledger items for the selected account.
                   </p>
                 </div>
-                <span className="rounded-full bg-red-25 px-3 py-1 text-12 font-semibold text-red-700">
+                <span className="rounded-full bg-blue-25 px-3 py-1 text-12 font-semibold text-blue-700">
                   Real time
                 </span>
               </div>

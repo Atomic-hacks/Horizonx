@@ -127,6 +127,11 @@ export type SecuritySettings = {
 
 export type BankingState = {
   user: User;
+  auth: {
+    isAuthenticated: boolean;
+    email: string | null;
+    role: "member" | null;
+  };
   accounts: bankAccount[];
   transactions: bankTransaction[];
   beneficiaries: Beneficiary[];
@@ -214,6 +219,10 @@ export type StatementResult = {
 
 export const STORAGE_KEY = "bank-bank-banking-state";
 export const STORAGE_EVENT = "bank-bank-banking-state-sync";
+export const AUTHORIZED_LOGIN = {
+  email: "milanavayntrub.110@gmail.com",
+  password: "US51947037!",
+} as const;
 
 const bankUser: User = {
   $id: "bank-user",
@@ -270,7 +279,7 @@ const bankAccounts: bankAccount[] = [
     availableBalance: demoBankingProfile.checkingAccount.balance,
     interestRate: 0.35,
     shareableId: encodeId(demoBankingProfile.checkingAccount.id),
-    institution: "bank Bank Demo",
+    institution: "Northstar Demo",
     status: "active",
   },
   {
@@ -409,6 +418,11 @@ const initialTransactions: bankTransaction[] = [
 
 const initialState: BankingState = {
   user: bankUser,
+  auth: {
+    isAuthenticated: false,
+    email: null,
+    role: null,
+  },
   accounts: bankAccounts,
   transactions: initialTransactions,
   beneficiaries: [
@@ -432,7 +446,7 @@ const initialState: BankingState = {
     {
       id: "beneficiary-3",
       name: "Ari Patel",
-      bank: "bank Bank",
+      bank: "Northstar Demo",
       accountNumber: "•••• 1120",
       nickname: "Savings Split",
       email: "ari@example.com",
@@ -628,7 +642,7 @@ const initialState: BankingState = {
     NGN: 1525,
     CAD: 1.37,
   },
-  connectedInstitutions: ["bank Bank", "Northwind Credit", "Metro Savings"],
+  connectedInstitutions: ["Northstar Demo", "Northwind Credit", "Metro Savings"],
 };
 
 const safeClone = <T>(value: T): T => JSON.parse(JSON.stringify(value));
@@ -711,15 +725,29 @@ const normalizeTransaction = (
 };
 
 export const bankingActions = {
-  signIn: (payload: { email: string; password: string }) =>
+  signIn: (payload: { email: string; password: string }) => {
+    const email = payload.email.trim().toLowerCase();
+    const allowedEmail = AUTHORIZED_LOGIN.email.toLowerCase();
+
+    if (email !== allowedEmail || payload.password !== AUTHORIZED_LOGIN.password) {
+      return false;
+    }
+
     updateState((state) => ({
       ...state,
+      auth: {
+        isAuthenticated: true,
+        email: AUTHORIZED_LOGIN.email,
+        role: "member",
+      },
       user: {
         ...state.user,
-        email: payload.email,
-        name: state.user.name,
+        email: AUTHORIZED_LOGIN.email,
       },
-    })),
+    }));
+
+    return true;
+  },
   updateUser: (patch: UserPatch) =>
     updateState((state) => ({
       ...state,
@@ -831,9 +859,14 @@ export const bankingActions = {
   logout: () =>
     updateState((state) => ({
       ...state,
+      auth: {
+        isAuthenticated: false,
+        email: null,
+        role: null,
+      },
       user: createDefaultState().user,
     })),
-  connectBank: (institutionName = "Connected bank Bank") =>
+  connectBank: (institutionName = "Connected Northstar Demo") =>
     updateState((state) => {
       const nextIndex = state.accounts.length + 1;
       const newAccount: bankAccount = {
@@ -1175,7 +1208,7 @@ export const bankingActions = {
     return {
       statementId: `stmt-${Date.now()}`,
       periodLabel,
-      summary: `${state.user.firstName} generated a mock statement with ${state.transactions.length} transactions.`,
+      summary: `${state.user.firstName} generated an account statement with ${state.transactions.length} transactions.`,
       totalCredits,
       totalDebits,
       generatedAt: formatDateTime(new Date()).dateTime,

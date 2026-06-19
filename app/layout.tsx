@@ -4,8 +4,9 @@ import "./globals.css";
 import { BankingProvider } from "@/components/banking-provider";
 
 export const metadata: Metadata = {
-  title: "bank",
-  description: "bank is a modern banking platform for everyone.",
+  title: "Northstar Financial Demo",
+  description:
+    "Northstar Financial Demo is a local-only banking experience with account insights, transactions, cards, and payment workflows.",
   icons: {
     icon: "/icons/logo.svg",
   },

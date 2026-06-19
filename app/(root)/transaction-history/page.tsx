@@ -80,7 +80,7 @@ const TransactionHistory = () => {
           .toLowerCase()
           .includes(search.toLowerCase())
       )
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [accountId, category, search, state.transactions, status]);
 
   const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / rowsPerPage));
@@ -147,7 +147,7 @@ const TransactionHistory = () => {
       </div>
 
       {statement && (
-        <div className="rounded-[28px] bg-red-25 p-5 text-red-950">
+        <div className="rounded-[28px] bg-blue-25 p-5 text-blue-950">
           <p className="text-16 font-semibold">{statement.periodLabel}</p>
           <p className="mt-1 text-14">{statement.summary}</p>
           <p className="mt-2 text-14">
@@ -200,7 +200,7 @@ const TransactionHistory = () => {
               resetPaging();
             }}
             className={`rounded-full border px-4 py-2 text-14 font-medium ${
-              category === item ? "border-red-600 bg-red-600 text-white" : "border-gray-200 bg-white text-gray-700"
+              category === item ? "border-blue-600 bg-blue-600 text-white" : "border-gray-200 bg-white text-gray-700"
             }`}
           >
             {item}

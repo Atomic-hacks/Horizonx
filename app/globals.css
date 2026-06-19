@@ -144,7 +144,7 @@ body {
   }
 
   .view-all-btn {
-    @apply text-14 rounded-full border border-red-200 bg-red-50 px-4 py-2 font-semibold text-red-700 transition hover:bg-red-100;
+    @apply text-14 rounded-full border border-blue-200 bg-blue-25 px-4 py-2 font-semibold text-blue-700 transition hover:bg-blue-100;
   }
 
   .recent-transactions {
@@ -165,7 +165,7 @@ body {
   }
 
   .profile-banner {
-    @apply h-[120px] w-full bg-[linear-gradient(135deg,#8b1e1e_0%,#5c1111_100%)] bg-cover bg-no-repeat;
+    @apply h-[120px] w-full bg-[linear-gradient(135deg,#0f172a_0%,#155e75_100%)] bg-cover bg-no-repeat;
   }
 
   .profile {
@@ -173,7 +173,7 @@ body {
   }
 
   .profile-img {
-    @apply flex-center absolute -top-8 size-24 rounded-full bg-red-50 border-8 border-white p-2 shadow-profile;
+    @apply flex-center absolute -top-8 size-24 rounded-full bg-blue-50 border-8 border-white p-2 shadow-profile;
   }
 
   .profile-details {
@@ -207,7 +207,7 @@ body {
   }
 
   .transactions-account {
-    @apply flex flex-col justify-between gap-4 rounded-[28px] bg-[linear-gradient(135deg,#8b1e1e_0%,#b91c1c_100%)] px-5 py-6 md:flex-row;
+    @apply flex flex-col justify-between gap-4 rounded-[28px] bg-[linear-gradient(135deg,#0f172a_0%,#155e75_100%)] px-5 py-6 md:flex-row;
   }
 
   .transactions-account-balance {
@@ -228,7 +228,7 @@ body {
 
   /* Bank Card */
   .bank-card {
-    @apply relative flex h-[176px] w-full max-w-full justify-between overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#7f1d1d_0%,#ef4444_55%,#fecaca_100%)] shadow-sm sm:h-[190px] sm:max-w-[320px];
+    @apply relative flex h-[176px] w-full max-w-full justify-between overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0f172a_0%,#1d4ed8_55%,#93c5fd_100%)] shadow-sm sm:h-[190px] sm:max-w-[320px];
   }
 
   .bank-card_content {
@@ -264,7 +264,7 @@ body {
 
   /* PlaidLink */
   .plaidlink-primary {
-    @apply text-16 rounded-full bg-[linear-gradient(135deg,#991b1b_0%,#dc2626_100%)] font-semibold text-white shadow-sm;
+    @apply text-16 rounded-full bg-[linear-gradient(135deg,#0f172a_0%,#155e75_100%)] font-semibold text-white shadow-sm;
   }
 
   .plaidlink-ghost {
@@ -293,11 +293,11 @@ body {
   }
 
   .form-btn {
-    @apply text-16 rounded-full bg-[linear-gradient(135deg,#991b1b_0%,#dc2626_100%)] font-semibold text-white shadow-sm;
+    @apply text-16 rounded-full bg-[linear-gradient(135deg,#0f172a_0%,#155e75_100%)] font-semibold text-white shadow-sm;
   }
 
   .form-link {
-    @apply text-14 cursor-pointer font-medium text-red-700;
+    @apply text-14 cursor-pointer font-medium text-blue-700;
   }
 
   /* Payment Transfer */
@@ -326,7 +326,7 @@ body {
   }
 
   .payment-transfer_btn {
-    @apply text-14 w-full rounded-full bg-[linear-gradient(135deg,#991b1b_0%,#dc2626_100%)] font-semibold text-white shadow-sm !important;
+    @apply text-14 w-full rounded-full bg-[linear-gradient(135deg,#0f172a_0%,#155e75_100%)] font-semibold text-white shadow-sm !important;
   }
 
   /* Root Layout */

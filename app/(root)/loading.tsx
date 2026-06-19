@@ -7,7 +7,7 @@ export default function Loading() {
           <div className="h-14 rounded-2xl bg-gray-100" />
           <div className="h-14 rounded-2xl bg-gray-100" />
           <div className="h-14 rounded-2xl bg-gray-100" />
-          <div className="mt-8 h-40 rounded-[28px] bg-gray-100" />
+          <div className="mt-8 h-100 rounded-[28px] bg-gray-100" />
         </div>
       </aside>
       <section className="flex-1 overflow-hidden p-6 lg:p-8">

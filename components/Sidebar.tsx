@@ -19,12 +19,11 @@ const Sidebar = ({ user }: SiderbarProps) => {
           className="mb-12 cursor-pointer flex items-center gap-2"
         >
           <Image
-            src="/logo.svg"
-            
+            src="/icons/logo.svg"
             alt="bank logo"
-            className="size-[24px] h-4 max-xl:size-14"
+            className="size-[24px] h-10 max-xl:size-14"
           />
-          <h1 className="sidebar-logo">bank</h1>
+          <h1 className="sidebar-logo">Northstar</h1>
         </Link>
 
         {sidebarLinks.map((item) => {

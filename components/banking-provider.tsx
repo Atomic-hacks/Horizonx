@@ -34,7 +34,7 @@ type BankingContextValue = {
   summary: ReturnType<typeof getAccountSummary>;
   refresh: () => void;
   actions: {
-    signIn: (payload: { email: string; password: string }) => void;
+    signIn: (payload: { email: string; password: string }) => boolean;
     signUp: (payload: SignUpParams) => void;
     logout: () => void;
     updateUser: (patch: UserPatch) => void;
@@ -94,8 +94,9 @@ export function BankingProvider({ children }: { children: ReactNode }) {
   const actions = useMemo(
     () => ({
       signIn: (payload: { email: string; password: string }) => {
-        bankingActions.signIn(payload);
+        const result = bankingActions.signIn(payload);
         refresh();
+        return result;
       },
       signUp: (payload: SignUpParams) => {
         bankingActions.signUp(payload);

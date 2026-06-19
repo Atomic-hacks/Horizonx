@@ -4,7 +4,7 @@ export default function Loading() {
       <section className="mx-auto flex w-full max-w-[420px] flex-col justify-center gap-6 animate-pulse">
         <div className="h-8 w-36 rounded-full bg-slate-200" />
         <div className="h-10 w-3/4 rounded-full bg-slate-200" />
-        <div className="h-4 w-full rounded-full bg-slate-100" />
+        <div className="h-10 w-full rounded-full bg-slate-100" />
         <div className="space-y-4 pt-4">
           <div className="h-12 rounded-xl bg-slate-100" />
           <div className="h-12 rounded-xl bg-slate-100" />

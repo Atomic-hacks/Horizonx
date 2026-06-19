@@ -13,7 +13,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
 
   const connect = async () => {
     setIsConnecting(true);
-    actions.connectBank(`${user.firstName}'s bank Bank`);
+    actions.connectBank(`${user.firstName}'s Northstar Demo`);
     await new Promise((resolve) => setTimeout(resolve, 650));
     router.push("/dashboard");
     setIsConnecting(false);
@@ -27,7 +27,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
           disabled={isConnecting}
           className="plaidlink-primary"
         >
-          {isConnecting ? "Connecting..." : "Connect bank bank"}
+          {isConnecting ? "Connecting..." : "Connect account"}
         </Button>
       ) : variant === "ghost" ? (
         <Button
@@ -43,7 +43,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
             height={24}
           />
           <p className="hidden text-[16px] font-semibold text-black-2 xl:block">
-            {isConnecting ? "Connecting..." : "Connect bank"}
+            {isConnecting ? "Connecting..." : "Connect account"}
           </p>
         </Button>
       ) : (
@@ -59,7 +59,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
             height={24}
           />
           <p className="text-[16px] font-semibold text-black-2">
-            {isConnecting ? "Connecting..." : "Connect bank"}
+            {isConnecting ? "Connecting..." : "Connect account"}
           </p>
         </Button>
       )}

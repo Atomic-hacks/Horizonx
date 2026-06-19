@@ -157,20 +157,20 @@ const primaryNav = [
   "Home Loans",
   "Auto Loans",
   "Smart Investing",
-  "Better Money Habits®",
+  "Financial Resources",
 ];
 
 const cardOffers = [
   {
     rate: "6%",
-    label: "cash back offer",
+    label: "rewards offer",
     sub: "No annual fee",
     badge: null,
     img: "/card1.webp",
   },
   {
     rate: "2%",
-    label: "cash back offer",
+    label: "rewards offer",
     sub: "No annual fee",
     badge: null,
     img: "/card2.webp",
@@ -192,37 +192,37 @@ const cardOffers = [
 ];
 
 const cashOffers = [
-  { amount: "$100", label: "cash offer" },
-  { amount: "$300", label: "cash offer" },
-  { amount: "$500", label: "cash offer" },
+  { amount: "$100", label: "welcome offer" },
+  { amount: "$300", label: "welcome offer" },
+  { amount: "$500", label: "welcome offer" },
 ];
 
 const features = [
   {
     icon: <TrendIcon />,
-    title: "6% customized cash back",
-    body: "Earn more cash back in the category of your choice with the Customized Cash Rewards card.",
-    cta: "Apply now",
+    title: "Everyday rewards",
+    body: "Review card options and compare how each one fits your spending patterns.",
+    cta: "View options",
     accent: true,
   },
   {
     icon: <DollarIcon />,
-    title: "Cash offer up to $500",
-    body: "Check out this cash offer for new checking customers.",
+    title: "New account guidance",
+    body: "Review account setup steps and supporting details before you continue.",
     cta: "See details",
     accent: false,
   },
   {
     icon: <BellIcon />,
-    title: "Custom mobile alerts",
-    body: "With our Mobile Banking app alerts, prioritize what you see based on what matters most.",
-    cta: "Get the app",
+    title: "Mobile alerts",
+    body: "Stay informed with alert preferences that highlight account activity and balance changes.",
+    cta: "Review alerts",
     accent: false,
   },
   {
     icon: <ShieldIcon />,
-    title: "Solutions built around you",
-    body: "We provide the tools, people and know-how to help you pursue your financial goals.",
+    title: "Service overview",
+    body: "Use the demo workspace to review balances, transactions, and account tools.",
     cta: "Get started",
     accent: false,
   },
@@ -230,20 +230,19 @@ const features = [
 
 const articles = [
   {
-    title: "How does a home equity line of credit work—and how can it help?",
+    title: "Understanding account types and balances",
     img: "https://placehold.co/280x160/e8eaf0/4a5568?text=HELOC+Guide",
   },
   {
-    title: "8 common bank fees—and how to avoid them",
+    title: "Common service charges and account controls",
     img: "https://placehold.co/280x160/e8eaf0/4a5568?text=Bank+Fees",
   },
   {
-    title: "What is a certificate of deposit (CD) and how does it work?",
+    title: "What a certificate of deposit is used for",
     img: "https://placehold.co/280x160/e8eaf0/4a5568?text=CD+Guide",
   },
   {
-    title:
-      "Retrain your brain for savings success with these money-saving challenges",
+    title: "Build better savings habits with simple routines",
     img: "https://placehold.co/280x160/e8eaf0/4a5568?text=Savings+Tips",
   },
 ];
@@ -284,11 +283,11 @@ export default function LandingPage() {
     <main className="min-h-screen bg-white text-slate-900 font-sans">
       {/* ── 1. FDIC top strip ────────────────────────────────────────────── */}
       <div className="bg-[#f2f2f2] border-b border-[#d8d8d8] text-[11px] text-slate-600 py-1 px-4 text-center">
-        bank deposit products:&nbsp;
+        Deposit products and services:&nbsp;
         <span className="font-bold text-[#006b35] border border-[#006b35] px-1 py-0.5 text-[10px] mr-1">
           FDIC
         </span>
-        Insured · Backed by the full faith and credit bank U.S.S
+        Insured · Subject to product terms and availability
       </div>
 
       {/* ── 2. Utility nav ───────────────────────────────────────────────── */}
@@ -340,7 +339,7 @@ export default function LandingPage() {
             {/* Wordmark logo */}
             <div className="flex items-center gap-1.5">
               <span className="text-[15px] font-bold text-slate-900 ml-1 tracking-tight">
-                <img src="/logo.svg" alt="logo" className="h-5" />
+                <img src="/icons/logo.svg" alt="logo" className="h-5" />
               </span>
             </div>
           </Link>
@@ -423,9 +422,9 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-4 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-3 text-[13px]">
             <span className="text-[#f4b400] text-xl">💰</span>
-            <span className="font-bold">CASH OFFER UP TO $500</span>
+            <span className="font-bold">WELCOME OFFER AVAILABLE</span>
             <span className="text-slate-700">
-              for new checking customers&nbsp;
+              for eligible new accounts&nbsp;
             </span>
             <a
               href="#"
@@ -482,8 +481,8 @@ export default function LandingPage() {
               Change the game
             </div>
             <p className="text-[13px] text-slate-600 leading-5">
-              bank champions everyone who dares to ask — what would you like the
-              power to do?
+              Northstar Financial Demo gives you a clean view of balances,
+              transactions, and account tools in one place.
             </p>
             <a
               href="#"
@@ -494,9 +493,9 @@ export default function LandingPage() {
           </div>
           <div className="bg-[#012169] text-white rounded-sm p-5 flex items-center justify-between">
             <div>
-              <div className="text-[13px] font-bold">bank for Business</div>
+              <div className="text-[13px] font-bold">Business banking</div>
               <div className="text-[12px] text-red-200 mt-1">
-                Tools built for teams and founders
+                Tools built for teams and operators
               </div>
             </div>
             <div className="text-3xl">🏢</div>
@@ -517,7 +516,7 @@ export default function LandingPage() {
             {[
               "Multi-account management",
               "Instant domestic transfers",
-              "Smart cashback rewards",
+              "Transaction tracking",
             ].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <span className="text-[#006b35] font-bold">✓</span> {item}
@@ -563,11 +562,11 @@ export default function LandingPage() {
       <section className="border-t border-[#d8d8d8] bg-white">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <h2 className="text-[22px] font-bold text-slate-900 text-center mb-1">
-            Your financial goals matter
+            Financial planning resources
           </h2>
           <p className="text-[13px] text-slate-600 text-center mb-8 max-w-2xl mx-auto">
-            We can help you achieve them through Better Money Habits® financial
-            education and programs that make communities stronger.
+            Explore practical education and planning resources that support
+            everyday financial decisions.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
             {articles.map((a) => (
@@ -596,7 +595,7 @@ export default function LandingPage() {
               Explore more topics and build your financial know-how.
             </p>
             <button className="bg-[#012169] text-white text-[13px] font-bold px-6 py-2.5 rounded-full hover:bg-[#011550] transition">
-              Visit Better Money Habits®
+              Explore resources
             </button>
           </div>
         </div>
@@ -611,21 +610,20 @@ export default function LandingPage() {
           <div className="bg-white border border-[#d8d8d8] rounded-sm p-6 flex items-start justify-between gap-6">
             <div className="flex-1">
               <h3 className="text-[16px] font-bold text-slate-900 mb-2">
-                Level up your account security
+                Strengthen account security
               </h3>
               <p className="text-[13px] text-slate-600 leading-5 max-w-lg">
-                Watch your security meter rise as you take action to help
-                protect against fraud. See it in the Security Center in Mobile
-                and Online Banking.
+                Review available security settings and keep track of account
+                protection options.
               </p>
               <button className="mt-4 bg-[#c41230] text-white text-[13px] font-bold px-5 py-2 rounded-full hover:bg-[#a00e26] transition">
-                Check your level
+                Review settings
               </button>
             </div>
             <div className="hidden md:flex flex-col items-center justify-center bg-[#012169] rounded-xl p-4 min-w-[120px]">
               <ShieldIcon />
               <div className="text-white text-[11px] mt-2 font-semibold text-center">
-                Advanced
+                Account
                 <br />
                 Security
               </div>
@@ -644,22 +642,22 @@ export default function LandingPage() {
             <div className="flex items-center gap-2 mb-3">
               <MobileIcon />
               <h2 className="text-[20px] font-bold">
-                Convenient banking with our Mobile app
+                Mobile banking experience
               </h2>
             </div>
             <p className="text-[13px] text-red-200 max-w-md leading-5">
-              Check balances, transfer funds, pay bills, and deposit checks—all
+              Check balances, move money, pay bills, and review account activity
               from your phone.
             </p>
             <button className="mt-5 border-2 border-white text-white font-bold text-[13px] px-6 py-2.5 rounded-full hover:bg-white hover:text-[#012169] transition">
-              Explore our app
+              Explore the demo
             </button>
           </div>
           {/* Mobile device preview */}
           <div className="hidden md:block bg-white/10 border border-white/20 rounded-[20px] p-4 w-48">
             <div className="bg-white rounded-xl p-3">
               <div className="text-[9px] text-[#012169] font-bold mb-2">
-                bank BANK
+                Northstar
               </div>
               <div className="text-[8px] text-slate-500 mb-1">Accounts</div>
               <div className="grid grid-cols-2 gap-1">
@@ -685,7 +683,7 @@ export default function LandingPage() {
       <section className="border-t border-[#d8d8d8] bg-white">
         <div className="mx-auto max-w-7xl px-4 py-10">
           <h2 className="text-[20px] font-bold text-slate-900 text-center mb-8">
-            Connect with us
+            Support channels
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {connectLinks.map((link) => (
@@ -749,26 +747,8 @@ export default function LandingPage() {
             Online Banking Service Agreement
           </a>
           <p>
-            Investing in securities involves risks, and there is always the
-            potential of losing money when you invest in securities. Review any
-            planned financial transactions that may have tax or legal
-            implications with your personal tax or legal advisor.
-          </p>
-          <p>
-            Securities products are offered by bank Investment Services, a
-            registered broker-dealer, registered investment adviser, and a
-            wholly-owned subsidiary of bank Corporation. Bank of America makes
-            available certain investment products sponsored, managed,
-            distributed or distributed by companies that are affiliates of bank
-            Corporation.
-          </p>
-          <p>
-            Banking, credit card, automobile loans, mortgage and home equity
-            products are provided by bank Bank, N.A. and affiliated banks.
-            Members FDIC and wholly owned subsidiaries of bank Corporation.
-            Credit and collateral are subject to approval. Terms and conditions
-            apply. This is not a commitment to lend. Programs, rates, terms and
-            conditions are subject to change without notice.
+            Investing involves risk, including possible loss of principal.
+            Review any tax or legal implications with your personal advisor.
           </p>
         </div>
       </section>
@@ -788,10 +768,7 @@ export default function LandingPage() {
             ))}
           </div>
           <div className="border-t border-white/10 pt-4 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-red-300">
-            <p>
-              bank Bank, N.A. Member FDIC · Equal Housing Lender · © 2026 bank
-              Corporation. All rights reserved.
-            </p>
+            <p>Northstar Financial Demo · © 2026</p>
             <div className="flex items-center gap-3 text-red-200">
               {["f", "ig", "in", "yt"].map((s) => (
                 <a

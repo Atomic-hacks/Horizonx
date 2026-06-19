@@ -22,7 +22,6 @@ const dashboardActions = [
   { href: "/bill-pay-direct-deposit", label: "Bill Pay / Direct Deposit" },
   { href: "/transaction-history", label: "View statement" },
   { href: "/cards", label: "Manage cards" },
-  { href: "/admin", label: "Admin dashboard" },
 ];
 
 const Dashboard = () => {
@@ -76,7 +75,7 @@ const Dashboard = () => {
             transaction.accountId === currentAccount?.appwriteItemId,
         )
         .sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
         ),
     [currentAccount?.appwriteItemId, state.transactions],
   );
@@ -116,15 +115,15 @@ const Dashboard = () => {
             type="greeting"
             title="Hello"
             user={state.user.name}
-            subtext="you've been enjoying preferred rewards from business banking for 8 years!"
+            subtext="you have been a 3 tier member since 2018 earning preferred rewards."
           />
 
           <div className="flex flex-col md:grid gap-4 xl:grid-cols-[1.4fr_0.9fr]">
             {" "}
-            <p className="text-3xl text-red-500 ml-4">Banking</p>
-            <div className="r border border-neutral-400 bg-white p-4 shadow-sm">
+            <p className="text-3xl text-slate-900 ml-4">Banking</p>
+            <div className="border border-neutral-400 bg-blue-200 p-4 shadow-sm">
               <div className="md:mt-6 grid md:gap-4 md:grid-cols-2">
-                <div className="md:rounded pb-4 flex justify-between w-full items-center bg-gray-50 border-b border-neutral-300">
+                <div className="md:rounded pb-4 flex justify-between w-full items-center border-b border-neutral-300">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
                       Checking -3321
@@ -139,7 +138,7 @@ const Dashboard = () => {
                   <ChevronRight className="ml-2 inline h-8 text-gray-400" />
                 </div>
 
-                <div className="flex justify-between items-center md:rounded pb-4 pt-4  bg-gray-50 border-b border-neutral-300">
+                <div className="flex justify-between items-center md:rounded pb-4 pt-4   border-b border-neutral-300">
                   <div className="flex flex-col ">
                     <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
                       Savings account
@@ -159,7 +158,7 @@ const Dashboard = () => {
                           No savings account yet
                         </p>
                         <p className=" text-xs text-gray-600">
-                          Savings has not been created for this mock profile.
+                          Savings has not been created for this profile.
                         </p>
                       </>
                     )}
@@ -167,7 +166,7 @@ const Dashboard = () => {
                   <ChevronRight className="ml-2 inline h-8 text-gray-400" />
                 </div>
 
-                <div className="md:rounded pb-4 pt-4 flex justify-between items-center bg-gray-50 border-b border-neutral-300">
+                <div className="md:rounded pb-4 pt-4 flex justify-between items-center  border-b border-neutral-300">
                   <div className="flex flex-col">
                     <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                       Investment portfolio
@@ -180,7 +179,7 @@ const Dashboard = () => {
                   <ChevronRight className="ml-2 inline h-8 text-gray-400" />
                 </div>
 
-                <div className="md:rounded pb-4 pt-4 flex justify-between items-center bg-gray-50 ">
+                <div className="md:rounded pb-4 pt-4 flex justify-between items-center  ">
                   <div className="flex flex-col">
                     <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                       Transaction count
@@ -189,7 +188,7 @@ const Dashboard = () => {
                       {state.transactions.length}
                     </p>
                     <p className=" text-xs text-gray-600">
-                      All ledger entries are sourced from local mock data.
+                      All ledger entries are sourced from your banking data.
                     </p>
                   </div>
                   <ChevronRight className="ml-2 inline h-8 text-gray-400" />
@@ -205,7 +204,7 @@ const Dashboard = () => {
                   <Link
                     key={action.href}
                     href={action.href}
-                    className=" bg-gray-50 p-4 transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-white"
+                    className="  p-4 transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-white"
                   >
                     <p className="text-16 font-semibold text-gray-900">
                       {action.label}
@@ -228,7 +227,7 @@ const Dashboard = () => {
 
         <section className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_355px]">
           <div className="min-w-0 space-y-6">
-            <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm">
+            <div className="rounded-[28px] border border-gray-200 bg-blue-100 p-6 shadow-sm">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <h2 className="text-20 font-semibold text-gray-900">
@@ -275,7 +274,7 @@ const Dashboard = () => {
                   );
                   const percentage = (value / Math.max(1, totalSpent)) * 100;
                   return (
-                    <div key={name} className="rounded bg-gray-50 p-4">
+                    <div key={name} className="rounded  p-4">
                       <p className="text-xs font-medium text-gray-700">
                         {name}
                       </p>
@@ -337,7 +336,7 @@ const Dashboard = () => {
                     className="input-class"
                   />
                 </div>
-                <div className="mt-4 rounded bg-gray-50 p-4">
+                <div className="mt-4 rounded  p-4">
                   <p className="text-xs text-gray-600">
                     Estimated monthly payment
                   </p>
@@ -403,7 +402,7 @@ const Dashboard = () => {
                     </select>
                   </div>
                 </div>
-                <div className="mt-4 rounded bg-gray-50 p-4">
+                <div className="mt-4 rounded  p-4">
                   <p className="text-xs text-gray-600">Converted amount</p>
                   <p className="text-24 font-semibold text-gray-900">
                     {currencyPreview.toLocaleString()} {conversion.to}
@@ -462,7 +461,7 @@ const Dashboard = () => {
                     {isOpeningDeposit ? "Opening..." : "Open deposit"}
                   </Button>
                 </div>
-                <div className="mt-4 rounded bg-gray-50 p-4">
+                <div className="mt-4 rounded  p-4">
                   <p className="text-xs text-gray-600">Latest deposit</p>
                   <p className="text-18 font-semibold text-gray-900">
                     {fixedDeposit.title}
@@ -482,7 +481,7 @@ const Dashboard = () => {
                   <h2 className="text-20 font-semibold text-gray-900">
                     Security center
                   </h2>
-                  <span className="rounded-full bg-emerald-25 px-3 py-1 text-12 font-semibold text-emerald-700">
+                  <span className="rounded-full bg-success-25 px-3 py-1 text-12 font-semibold text-emerald-700">
                     Protected
                   </span>
                 </div>
@@ -540,7 +539,7 @@ const Dashboard = () => {
                       className={cn(
                         "w-full rounded border px-4 py-3 text-left transition",
                         notification.read
-                          ? "border-gray-200 bg-gray-50"
+                          ? "border-gray-200 "
                           : "border-blue-200 bg-blue-25",
                       )}
                     >

@@ -42,9 +42,9 @@ const MobileNav = ({ user }: MobileNavProps) => {
             href="/dashboard"
             className="flex cursor-pointer items-center gap-1 px-4"
           >
-            <img src="/logo.svg" className=" h-4 " alt="bank logo" />
+            <img src="/icons/logo.svg" className=" h-100 " alt="bank logo" />
             <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-              bank
+              Northstar
             </h1>
           </Link>
           <div className="mobilenav-sheet">

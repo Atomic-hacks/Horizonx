@@ -63,7 +63,7 @@ const TransactionsTable = ({
                   </p>
                 </div>
                 <p className={`text-14 font-semibold ${
-                  isDebit || amount[0] === "-" ? "text-[#f04438]" : "text-[#039855]"
+                  isDebit || amount[0] === "-" ? "text-[#b42318]" : "text-[#067647]"
                 }`}>
                   {isDebit ? `-${amount}` : amount}
                 </p>
@@ -115,7 +115,7 @@ const TransactionsTable = ({
                     onClick={() => onTransactionSelect?.(t)}
                     className={`cursor-pointer transition hover:bg-gray-50 ${
                       isDebit || amount[0] === "-"
-                        ? "bg-red-25/40"
+                        ? "bg-blue-25/40"
                         : "bg-white"
                     } border-b border-gray-100`}
                   >
@@ -137,8 +137,8 @@ const TransactionsTable = ({
                     <TableCell
                       className={`pl-2 pr-10 font-semibold ${
                         isDebit || amount[0] === "-"
-                          ? "text-[#f04438]"
-                          : "text-[#039855]"
+                          ? "text-[#b42318]"
+                          : "text-[#067647]"
                       }`}
                     >
                       {isDebit ? `-${amount}` : isCredit ? amount : amount}

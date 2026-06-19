@@ -106,18 +106,18 @@ export function getAccountTypeColors(type: AccountTypes) {
   switch (type) {
     case "depository":
       return {
-        bg: "bg-red-25",
-        lightBg: "bg-red-100",
-        title: "text-red-900",
-        subText: "text-red-700",
+        bg: "bg-blue-25",
+        lightBg: "bg-blue-100",
+        title: "text-blue-900",
+        subText: "text-blue-700",
       };
 
     case "credit":
       return {
-        bg: "bg-rose-25",
-        lightBg: "bg-rose-100",
-        title: "text-rose-900",
-        subText: "text-rose-700",
+        bg: "bg-indigo-100",
+        lightBg: "bg-indigo-100",
+        title: "text-indigo-900",
+        subText: "text-indigo-700",
       };
 
     default:

@@ -42,7 +42,7 @@ const DirectDeposit = () => {
       />
 
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr] animate-in fade-in slide-in-from-bottom-2">
-        <div className="rounded-[32px] border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 ease-out">
+        <div className="rounded-[32px] border border-gray-200 bg-blue-100 p-6 shadow-sm transition-all duration-300 ease-out">
           <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
             Link account for direct deposit
           </p>
@@ -58,7 +58,7 @@ const DirectDeposit = () => {
               <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                 Account Holder
               </p>
-              <p className="mt-2 text-16 font-semibold text-gray-900">
+              <p className="mt-2 text-16 font-semibold text-red-500">
                 {directDepositProfile.directDeposit.accountHolder}
               </p>
             </div>
@@ -66,7 +66,7 @@ const DirectDeposit = () => {
               <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                 Account Number
               </p>
-              <p className="mt-2 text-16 font-semibold text-gray-900">
+              <p className="mt-2 text-16 font-semibold text-red-500">
                 {directDepositProfile.directDeposit.accountNumber}
               </p>
             </div>
@@ -74,7 +74,7 @@ const DirectDeposit = () => {
               <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                 Routing Number
               </p>
-              <p className="mt-2 text-16 font-semibold text-gray-900">
+              <p className="mt-2 text-16 font-semibold text-red-500">
                 {directDepositProfile.directDeposit.routingNumber}
               </p>
             </div>
@@ -82,7 +82,7 @@ const DirectDeposit = () => {
               <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                 Address
               </p>
-              <p className="mt-2 text-16 font-semibold text-gray-900">
+              <p className="mt-2 text-16 font-semibold text-red-500">
                 {directDepositProfile.directDeposit.address}
               </p>
             </div>
@@ -91,14 +91,14 @@ const DirectDeposit = () => {
           <div
             className={`mt-6 rounded-2xl border p-5 transition-all duration-300 ${
               submitted
-                ? "border-red-200 bg-red-25 opacity-100"
+                ? "border-blue-200 bg-blue-25 opacity-100"
                 : "border-gray-200 bg-gray-50 opacity-100"
             }`}
           >
             <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
               Status
             </p>
-            <p className="mt-2 text-20 font-semibold text-gray-900">
+            <p className="mt-2 text-20 font-semibold text-red-500">
               {submitted ? "Pending Verification" : "Not linked yet"}
             </p>
             <p className="mt-1 text-14 text-gray-600">
@@ -115,21 +115,21 @@ const DirectDeposit = () => {
               <p className="text-12 uppercase tracking-[0.2em] text-gray-500">
                 Direct deposit form
               </p>
-              <h2 className="mt-2 text-24 font-semibold text-gray-900">
+              <h2 className="mt-2 text-24 font-semibold text-red-500">
                 Verify your account
               </h2>
             </div>
-            <span className="rounded-full bg-red-25 px-3 py-1 text-12 font-semibold text-red-700">
+            <span className="rounded-full bg-blue-25 px-3 py-1 text-12 font-semibold text-blue-700">
               Setup
             </span>
           </div>
 
           {submitted && (
-            <div className="mt-6 rounded-2xl border border-red-200 bg-red-25 p-4 transition-all duration-300">
-              <p className="text-12 uppercase tracking-[0.2em] text-red-700">
+            <div className="mt-6 rounded-2xl border border-blue-200 bg-blue-25 p-4 transition-all duration-300">
+              <p className="text-12 uppercase tracking-[0.2em] text-blue-700">
                 Success
               </p>
-              <p className="mt-2 text-16 font-semibold text-red-900">
+              <p className="mt-2 text-16 font-semibold text-blue-900">
                 Your direct deposit account has been linked and is pending verification.
               </p>
             </div>
@@ -175,13 +175,13 @@ const DirectDeposit = () => {
 
             <div className="rounded-2xl bg-gray-50 p-4 text-14 text-gray-600">
               Match check:{" "}
-              <span className={`font-semibold ${matches ? "text-red-700" : "text-rose-600"}`}>
+              <span className={`font-semibold ${matches ? "text-blue-700" : "text-slate-600"}`}>
                 {matches ? "Ready to submit" : "Numbers must match"}
               </span>
             </div>
 
             {error && (
-              <div className="rounded-2xl border border-rose-200 bg-rose-25 p-4 text-14 text-rose-700">
+              <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-14 text-rose-700">
                 {error}
               </div>
             )}

@@ -44,7 +44,7 @@ const RecentTransactions = ({
         {accounts.map((account: Account) => {
           const accountTransactions = transactions.filter(
             (transaction) => transaction.accountId === account.appwriteItemId
-          ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+          ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
           const totalPages = Math.ceil(accountTransactions.length / rowsPerPage);
           const currentPage = Math.min(page, Math.max(1, totalPages));
           const indexOfLastTransaction = currentPage * rowsPerPage;

@@ -13,7 +13,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
 
   const connect = async () => {
     setIsConnecting(true);
-    actions.connectBank(`${user.firstName}'s Northstar Demo`);
+    actions.connectBank(`${user.firstName}'s Banking America`);
     await new Promise((resolve) => setTimeout(resolve, 650));
     router.push("/dashboard");
     setIsConnecting(false);

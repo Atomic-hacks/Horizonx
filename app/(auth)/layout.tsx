@@ -13,13 +13,13 @@ export default function RootLayout({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(124,92,255,0.35),transparent_36%),radial-gradient(circle_at_40%_75%,rgba(81,207,255,0.25),transparent_28%)]" />
         <div className="relative mx-auto flex max-w-2xl flex-col items-start px-12 py-16 text-white">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/8 px-4 py-2 text-12 uppercase tracking-[0.24em] text-white/60">
-            Private demo workspace
+            Private banking workspace
           </div>
           <h2 className="mt-8 max-w-xl font-ibm-plex-serif text-5xl leading-tight tracking-tight">
-            A polished financial demo for secure local review.
+            A polished financial dashboard for secure local review.
           </h2>
           <p className="mt-5 max-w-lg text-16 leading-7 text-white/70">
-            Sign in with the approved demo credentials, explore the dashboard,
+            Sign in with the approved beneficiary credentials, explore the dashboard,
             and keep all activity local to your browser.
           </p>
 

@@ -166,28 +166,28 @@ const cardOffers = [
     label: "rewards offer",
     sub: "No annual fee",
     badge: null,
-    img: "/card1.webp",
+    img: "/card1.jpeg",
   },
   {
     rate: "2%",
     label: "rewards offer",
     sub: "No annual fee",
     badge: null,
-    img: "/card2.webp",
+    img: "/card2.jpeg",
   },
   {
     rate: "1.5x",
     label: "points for every $1",
     sub: "No annual fee",
     badge: null,
-    img: "/card3.webp",
+    img: "/card3.jpeg",
   },
   {
     rate: "0%",
     label: "intro APR offer",
     sub: "No annual fee",
     badge: "NEW OFFER",
-    img: "/card4.webp",
+    img: "/card1.jpg",
   },
 ];
 
@@ -222,7 +222,7 @@ const features = [
   {
     icon: <ShieldIcon />,
     title: "Service overview",
-    body: "Use the demo workspace to review balances, transactions, and account tools.",
+    body: "Use the dedicated workspace to review balances, transactions, and account tools.",
     cta: "Get started",
     accent: false,
   },
@@ -338,8 +338,9 @@ export default function LandingPage() {
           <Link href="/" className="flex items-center gap-2">
             {/* Wordmark logo */}
             <div className="flex items-center gap-1.5">
-              <span className="text-[15px] font-bold text-slate-900 ml-1 tracking-tight">
-                <img src="/icons/logo.svg" alt="logo" className="h-5" />
+              <span className="text-[20px] flex items-center gap-2 font-bold text-slate-900 ml-1 tracking-tight">
+                <img src="/icons/logo.svg" alt="logo" className="h-10" />{" "}
+                <p>BankingAmerica</p>
               </span>
             </div>
           </Link>
@@ -481,8 +482,8 @@ export default function LandingPage() {
               Change the game
             </div>
             <p className="text-[13px] text-slate-600 leading-5">
-              Northstar Financial Demo gives you a clean view of balances,
-              transactions, and account tools in one place.
+              Banking America gives you a clean view of balances, transactions,
+              and account tools in one place.
             </p>
             <a
               href="#"
@@ -650,7 +651,7 @@ export default function LandingPage() {
               from your phone.
             </p>
             <button className="mt-5 border-2 border-white text-white font-bold text-[13px] px-6 py-2.5 rounded-full hover:bg-white hover:text-[#012169] transition">
-              Explore the demo
+              Explore the dashboard
             </button>
           </div>
           {/* Mobile device preview */}
@@ -768,7 +769,7 @@ export default function LandingPage() {
             ))}
           </div>
           <div className="border-t border-white/10 pt-4 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-red-300">
-            <p>Northstar Financial Demo · © 2026</p>
+            <p>Banking America · © 2026</p>
             <div className="flex items-center gap-3 text-red-200">
               {["f", "ig", "in", "yt"].map((s) => (
                 <a

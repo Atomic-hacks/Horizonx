@@ -16,7 +16,7 @@ const MyBanksPage = () => {
   return (
     <section className="flex w-full min-w-0">
       <div className="my-banks space-y-8">
-          <HeaderBox
+        <HeaderBox
           title={isCardsRoute ? "Cards" : "Accounts"}
           subtext={
             isCardsRoute
@@ -53,7 +53,10 @@ const MyBanksPage = () => {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Button onClick={() => actions.connectBank("Connected Northstar Demo")} className="rounded-full">
+          <Button
+            onClick={() => actions.connectBank("Connected Banking America")}
+            className="rounded-full"
+          >
             Connect account
           </Button>
           <Button
@@ -179,7 +182,10 @@ const MyBanksPage = () => {
             </h2>
             <div className="mt-4 space-y-3">
               {state.beneficiaries.map((beneficiary) => (
-                <div key={beneficiary.id} className="rounded-2xl bg-blue-100 p-4">
+                <div
+                  key={beneficiary.id}
+                  className="rounded-2xl bg-blue-100 p-4"
+                >
                   <p className="text-16 font-semibold text-gray-900">
                     {beneficiary.name}
                   </p>

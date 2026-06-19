@@ -279,7 +279,7 @@ const bankAccounts: bankAccount[] = [
     availableBalance: demoBankingProfile.checkingAccount.balance,
     interestRate: 0.35,
     shareableId: encodeId(demoBankingProfile.checkingAccount.id),
-    institution: "Northstar Demo",
+    institution: "Banking AmericaDemo",
     status: "active",
   },
   {
@@ -446,7 +446,7 @@ const initialState: BankingState = {
     {
       id: "beneficiary-3",
       name: "Ari Patel",
-      bank: "Northstar Demo",
+      bank: "Banking America",
       accountNumber: "•••• 1120",
       nickname: "Savings Split",
       email: "ari@example.com",
@@ -642,7 +642,7 @@ const initialState: BankingState = {
     NGN: 1525,
     CAD: 1.37,
   },
-  connectedInstitutions: ["Northstar Demo", "Northwind Credit", "Metro Savings"],
+  connectedInstitutions: ["Banking AmericaDemo", "Northwind Credit", "Metro Savings"],
 };
 
 const safeClone = <T>(value: T): T => JSON.parse(JSON.stringify(value));
@@ -866,7 +866,7 @@ export const bankingActions = {
       },
       user: createDefaultState().user,
     })),
-  connectBank: (institutionName = "Connected Northstar Demo") =>
+  connectBank: (institutionName = "Connected Banking AmericaDemo") =>
     updateState((state) => {
       const nextIndex = state.accounts.length + 1;
       const newAccount: bankAccount = {

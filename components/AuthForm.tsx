@@ -61,7 +61,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
     <section className="auth-form">
       <header className="flex flex-col gap-5 md:gap-8">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/icons/logo.svg" className="h-10" alt="Northstar logo" />
+          <img
+            src="/icons/logo.svg"
+            className="h-10"
+            alt="Banking Americalogo"
+          />
         </Link>
 
         <div className="flex flex-col gap-2">

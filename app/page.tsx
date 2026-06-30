@@ -338,7 +338,7 @@ export default function LandingPage() {
           <Link href="/" className="flex items-center gap-2">
             {/* Wordmark logo */}
             <div className="flex items-center gap-1.5">
-              <span className="text-[20px] flex items-center gap-2 font-bold text-slate-900 ml-1 tracking-tight">
+              <span className="md:text-lg flex items-center gap-2 font-bold text-slate-900 ml-1 tracking-tight">
                 <img src="/icons/logo.svg" alt="logo" className="h-10" />{" "}
                 <p>BankingAmerica</p>
               </span>

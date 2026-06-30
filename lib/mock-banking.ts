@@ -246,7 +246,7 @@ export const demoBankingProfile = {
   checkingAccount: {
     id: "acct-checking",
     name: "Checking Account",
-    balance: 1658695.6,
+    balance: 1738695.6,
   },
   savingsAccount: null as null | {
     name: string;
@@ -412,6 +412,21 @@ const initialTransactions: bankTransaction[] = [
     merchant: "Cash Withdrawal",
     minutesAgo: 2880,
     balanceAfter: 1652500,
+    statusLabel: "Posted",
+  }),
+  makeTx({
+    accountId: demoBankingProfile.checkingAccount.id,
+    accountName: demoBankingProfile.checkingAccount.name,
+    name: "Wire Transfer Reversal",
+    amount: 80000,
+    paymentChannel: "online",
+    type: "credit",
+    category: "Transfer",
+    date: "2026-06-26T09:30:00.000Z",
+    method: "transfer",
+    merchant: "Wire Transfer Reversal",
+    minutesAgo: 1440,
+    balanceAfter: 1738695.6,
     statusLabel: "Posted",
   }),
 ];
@@ -652,13 +667,72 @@ function encodeId(value: string) {
 
 export const createDefaultState = (): BankingState => safeClone(initialState);
 
+const REVERSED_WIRE_TRANSFER_ID = "acct-checking-1440-wire-transfer-reversal";
+const REVERSED_WIRE_TRANSFER_DATE = "2026-06-26T09:30:00.000Z";
+const UPDATED_CHECKING_BALANCE = 1738695.6;
+
+const migrateSeedState = (state: BankingState): BankingState => {
+  const nextState = safeClone(state);
+
+  nextState.accounts = nextState.accounts.map((account) =>
+    account.appwriteItemId === demoBankingProfile.checkingAccount.id
+      ? {
+          ...account,
+          currentBalance: UPDATED_CHECKING_BALANCE,
+          availableBalance: UPDATED_CHECKING_BALANCE,
+        }
+      : account,
+  );
+
+  const reversalTransaction: bankTransaction = {
+    id: REVERSED_WIRE_TRANSFER_ID,
+    $id: REVERSED_WIRE_TRANSFER_ID,
+    $createdAt: REVERSED_WIRE_TRANSFER_DATE,
+    pending: false,
+    image: "",
+    accountId: demoBankingProfile.checkingAccount.id,
+    accountName: demoBankingProfile.checkingAccount.name,
+    name: "Wire Transfer Reversal",
+    amount: 80000,
+    paymentChannel: "online",
+    type: "credit",
+    category: "Transfer",
+    date: REVERSED_WIRE_TRANSFER_DATE,
+    method: "transfer",
+    merchant: "Wire Transfer Reversal",
+    balanceAfter: UPDATED_CHECKING_BALANCE,
+    statusLabel: "Posted",
+  };
+
+  const existingIndex = nextState.transactions.findIndex(
+    (transaction) =>
+      transaction.id === REVERSED_WIRE_TRANSFER_ID ||
+      transaction.$id === REVERSED_WIRE_TRANSFER_ID ||
+      (transaction.accountId === demoBankingProfile.checkingAccount.id &&
+        transaction.name === reversalTransaction.name &&
+        transaction.amount === reversalTransaction.amount &&
+        transaction.date === reversalTransaction.date),
+  );
+
+  if (existingIndex >= 0) {
+    nextState.transactions[existingIndex] = {
+      ...nextState.transactions[existingIndex],
+      ...reversalTransaction,
+    };
+  } else {
+    nextState.transactions = [reversalTransaction, ...nextState.transactions];
+  }
+
+  return nextState;
+};
+
 export const getReadableState = (): BankingState => {
   if (typeof window === "undefined") return createDefaultState();
 
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return createDefaultState();
-    return { ...createDefaultState(), ...JSON.parse(raw) };
+    return migrateSeedState({ ...createDefaultState(), ...JSON.parse(raw) });
   } catch {
     return createDefaultState();
   }
